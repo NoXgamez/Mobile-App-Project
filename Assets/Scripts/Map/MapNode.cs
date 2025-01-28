@@ -23,6 +23,11 @@ public class MapNode : MonoBehaviour
         NodeValue = Random.Range(NodeMin, NodeMax);
         NodeImg();
     }
+    public void SetNode(int node)
+    {
+        NodeValue = node; 
+        NodeImg();
+    }
     public void NodeImg()
     {
        Img=NodeImages[NodeValue];
