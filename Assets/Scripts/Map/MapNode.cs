@@ -13,11 +13,18 @@ public class MapNode : MonoBehaviour
     public int NodeMin = 1;
 
     [Tooltip("The texture image of the node.")]
-    public Texture2D Img;
+    public Sprite Img;
 
     [Tooltip("Array of textures corresponding to different node values.")]
-    public Texture2D[] NodeImages;
-
+    public Sprite[] NodeImages;
+    private void Start()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Img = spriteRenderer.sprite;
+        RandomNode();
+        spriteRenderer.sprite = Img;
+    }
+    
     public void RandomNode()
     {
         NodeValue = Random.Range(NodeMin, NodeMax);

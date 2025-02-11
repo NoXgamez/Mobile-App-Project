@@ -6,25 +6,36 @@ public class MapLayer : MonoBehaviour
     public int NodesForLayer;
     [Range(3, 4)]
     public int LayerCount;
-    //public int LayerMax = 4;
-    //public int LayerMin = 3;
-
+    public float nodeSpacing = 2.0f;
+    public GameObject nodePrefab; // Assign a prefab of MapNode in Inspector
     public MapNode[] mapNodes;
-    //public void CreateLayers()
-    //{
-    //    LayerCount = Random.Range(LayerMin, LayerMax);
-    //}
+    private void Start()
+    {
+        MapNodesInLayer();
+    }
     public void MapNodesInLayer()
     {
-        NodesForLayer = Random.Range(2, 4);
-        for (int i = 0; i < NodesForLayer; i++) 
+        NodesForLayer = Random.Range(2, 5); // 2, 3, or 4
+
+        mapNodes = new MapNode[NodesForLayer]; // Initialize array
+
+        for (int i = 0; i < NodesForLayer; i++)
         {
-            if (i == 0 || i==NodesForLayer)
+            Vector3 nodePosition = transform.position + new Vector3(i * nodeSpacing, 0, 0); // Space nodes horizontally
+
+            GameObject nodeObj = Instantiate(nodePrefab, nodePosition, Quaternion.identity, transform); // Instantiate node
+            MapNode node = nodeObj.GetComponent<MapNode>();
+
+            if (i == 0 || i == NodesForLayer - 1) // First and last nodes
             {
-                mapNodes[i].SetNode(0);
+                node.SetNode(0);
             }
-        mapNodes[i] = new MapNode();
-        mapNodes[i].RandomNode();
+            else
+            {
+                node.RandomNode();
+            }
+
+            mapNodes[i] = node; // Store in array
         }
     }
 }
