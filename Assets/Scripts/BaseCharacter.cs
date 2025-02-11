@@ -3,28 +3,46 @@ using UnityEngine;
 public class BaseCharacter : MonoBehaviour
 {
     // Components
-    public Texture2D texture;
+    private Sprite Sprite;
+    [Tooltip("Base should be 0, devil should be 1, angel should be 2")]
+    public Sprite[] Evolutions;
+    private SpriteRenderer spriteRenderer;
 
     // Variables
-    public int MaxHealth = 0;
+     private bool IsEvolved = false;
+
+    // Health
+    [SerializeField]
+    private int MaxHealth = 0;
     public int Health = 0;
-    public int HealthCap = 0;
-    public int MaxDamage = 0;
+    [SerializeField]
+    private int HealthCap = 0;
+
+    // Damage
+    [SerializeField]
+    private int MaxDamage = 0;
     public int Damage = 0;
-    public int DamageCap = 0;
-    public const float MaxStamina = 1f;
+    [SerializeField]
+    private int DamageCap = 0;
+
+    // Stamina
+    private const float MaxStamina = 1f;
     public float Stamina = 0f;
-    [Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] 
-    public float StaminaRecoveryRate = 0f; // Max Stamina Regen Rate is still to be decided
-    public int StaminaCount = 0;
-    // Experience may be a float or an int, depends which exp system we decide on
-    public float Experience = 0f;
-    public float ExperienceNeeded = 0f;
+    [SerializeField][Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] // Max Stamina Regen Rate is still to be decided
+    private float StaminaRecoveryRate = 0f;
+    public int StaminaCount = 0; // How many points of stamina the character currently has
+
+    // Experience
+    [Range(-3, 3)]
+    public int Experience = 0;
 
     private void Start()
     {
         // Setting the components & variables
-        texture = GetComponent<Texture2D>();
+        Sprite = Evolutions[0];
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = Sprite;
+
         Health = MaxHealth;
         Damage = MaxDamage;
         Stamina = MaxStamina * 0.75f; // Start the battle with a bit of stamina
@@ -47,7 +65,10 @@ public class BaseCharacter : MonoBehaviour
 
     private void BasicAttack()
     {
+        // Select a random node from the enemy position
+        // If the node is empty, go back one node, if gets to zero go back to top
 
+        // UpdateHealth(Damage) on the selected enemy
     }
 
     public void UpdateHealth(int amount)
@@ -64,39 +85,55 @@ public class BaseCharacter : MonoBehaviour
 
     private void KillCharacter()
     {
+        // Make the character useless
         StaminaRecoveryRate = 0f;
+        Stamina = 0;
+        StaminaCount = 0;
     }
 
-    public void LevelUp(float amount)
+    public void LevelUp(int amount)
     {
-        // Increase the experience
-        Experience += amount;
-
-        // Evolve when ExperienceNeeded is surpassed
-        if (Experience >= ExperienceNeeded)
+        if (!IsEvolved)
         {
-            Experience -= ExperienceNeeded;
-            Evolve();
+            // Increase the experience
+            Experience += amount;
+
+            // Evolve when ExperienceNeeded is surpassed
+            if (Experience <= 3)
+            {
+                Evolve(Evolutions[1]);
+            }
+            else if (Experience >= 3)
+            {
+                Evolve(Evolutions[2]);
+            }
         }
     }
 
-    private void Evolve()
+    private void Evolve(Sprite evolution)
     {
+        // Change the sprite and set it as evolved
+        Sprite = evolution;
+        spriteRenderer.sprite = Sprite;
+        IsEvolved = true;
 
+        // Increase the stats
+        IncreaseStat(2, Stat.Health);
+        IncreaseStat(2, Stat.Damage);
     }
 
-    public void IncreaseStat( int amount, string stat)
+    private void IncreaseStat( int amount, Stat stat)
     {
         switch (stat)
         {
-            case "Health":
+            case Stat.Health:
                 // Increase the health
                 MaxHealth += amount;
                 // Ensure the health doesn't surpass the cap
                 if (MaxHealth > HealthCap)
                     MaxHealth = HealthCap;
                 break;
-            case "Damage":
+            case Stat.Damage:
                 // Increase the damage
                 MaxDamage += amount;
                 // Ensure the damage doesn't surpass the cap
@@ -104,5 +141,11 @@ public class BaseCharacter : MonoBehaviour
                     MaxDamage = DamageCap;
                 break;
         }
+    }
+
+    private enum Stat
+    {
+        Health = 0,
+        Damage = 1
     }
 }
