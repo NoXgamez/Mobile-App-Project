@@ -3,7 +3,9 @@ using UnityEngine;
 public class BaseCharacter : MonoBehaviour
 {
     // Components
-    private Sprite Sprite;
+    private Sprite ActiveSprite;
+    [Range(0, 2)]
+    public int SpriteIndex = 0;
     [Tooltip("Base should be 0, devil should be 1, angel should be 2")]
     public Sprite[] Evolutions;
     private SpriteRenderer spriteRenderer;
@@ -39,9 +41,8 @@ public class BaseCharacter : MonoBehaviour
     private void Start()
     {
         // Setting the components & variables
-        Sprite = Evolutions[0];
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Sprite;
+        UpdateSprite();
 
         Health = MaxHealth;
         Damage = MaxDamage;
@@ -66,7 +67,7 @@ public class BaseCharacter : MonoBehaviour
     private void BasicAttack()
     {
         // Select a random node from the enemy position
-        // If the node is empty, go back one node, if gets to zero go back to top
+        // If the node is empty, go back one node, if gets below zero go back to top
 
         // UpdateHealth(Damage) on the selected enemy
     }
@@ -101,25 +102,32 @@ public class BaseCharacter : MonoBehaviour
             // Evolve when ExperienceNeeded is surpassed
             if (Experience <= 3)
             {
-                Evolve(Evolutions[1]);
+                SpriteIndex = 1;
+                Evolve();
             }
             else if (Experience >= 3)
             {
-                Evolve(Evolutions[2]);
+                SpriteIndex = 2;
+                Evolve();
             }
         }
     }
 
-    private void Evolve(Sprite evolution)
+    private void Evolve()
     {
         // Change the sprite and set it as evolved
-        Sprite = evolution;
-        spriteRenderer.sprite = Sprite;
+        UpdateSprite();
         IsEvolved = true;
 
         // Increase the stats
         IncreaseStat(2, Stat.Health);
         IncreaseStat(2, Stat.Damage);
+    }
+
+    private void UpdateSprite()
+    {
+        ActiveSprite = Evolutions[SpriteIndex];
+        spriteRenderer.sprite = ActiveSprite;
     }
 
     private void IncreaseStat( int amount, Stat stat)
