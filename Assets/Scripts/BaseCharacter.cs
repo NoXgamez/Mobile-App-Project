@@ -1,19 +1,24 @@
+using System.Linq;
 using UnityEngine;
 
 public class BaseCharacter : MonoBehaviour
 {
     // Components
+    [Header("Components")]
     private Sprite ActiveSprite;
     [Range(0, 2)]
     public int SpriteIndex = 0;
     [Tooltip("Base should be 0, devil should be 1, angel should be 2")]
     public Sprite[] Evolutions;
     private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private Team team;
 
     // Variables
      private bool IsEvolved = false;
 
     // Health
+    [Header("Health")]
     [SerializeField]
     private int MaxHealth = 0;
     public int Health = 0;
@@ -21,6 +26,7 @@ public class BaseCharacter : MonoBehaviour
     private int HealthCap = 0;
 
     // Damage
+    [Header("Damage")]
     [SerializeField]
     private int MaxDamage = 0;
     public int Damage = 0;
@@ -28,6 +34,7 @@ public class BaseCharacter : MonoBehaviour
     private int DamageCap = 0;
 
     // Stamina
+    [Header("Stamina")]
     private const float MaxStamina = 1f;
     public float Stamina = 0f;
     [SerializeField][Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] // Max Stamina Regen Rate is still to be decided
@@ -35,6 +42,7 @@ public class BaseCharacter : MonoBehaviour
     public int StaminaCount = 0; // How many points of stamina the character currently has
 
     // Experience
+    [Header("Experience")]
     [Range(-3, 3)]
     public int Experience = 0;
 
@@ -66,10 +74,20 @@ public class BaseCharacter : MonoBehaviour
 
     private void BasicAttack()
     {
-        // Select a random node from the enemy position
-        // If the node is empty, go back one node, if gets below zero go back to top
+        var aliveEnemies = team.EnemyTeam.SelectedCharacters
+            .Where(enemy => enemy.Health > 0)
+            .ToList();
 
-        // UpdateHealth(Damage) on the selected enemy
+        if (aliveEnemies.Count == 0)
+        {
+            Debug.Log("No valid targets to attack.");
+            return;
+        }
+
+        int selectedIndex = Random.Range(0, aliveEnemies.Count);
+        BaseCharacter selectedEnemy = aliveEnemies[selectedIndex];
+
+        selectedEnemy.UpdateHealth(-Damage);
     }
 
     public void UpdateHealth(int amount)
@@ -121,7 +139,9 @@ public class BaseCharacter : MonoBehaviour
 
         // Increase the stats
         IncreaseStat(2, Stat.Health);
+        HealthCap += 3; // Increase the health cap
         IncreaseStat(2, Stat.Damage);
+        DamageCap += 3; // Increase the damage cap
     }
 
     private void UpdateSprite()
