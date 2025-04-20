@@ -7,7 +7,7 @@ public class BaseCharacter : MonoBehaviour
     [Header("Components")]
     private Sprite ActiveSprite;
     [Range(0, 2)]
-    public int SpriteIndex = 0;
+    public int SpriteIndex;
     [Tooltip("Base should be 0, devil should be 1, angel should be 2")]
     public Sprite[] Evolutions;
     private SpriteRenderer spriteRenderer;
@@ -15,31 +15,32 @@ public class BaseCharacter : MonoBehaviour
     private Team team;
 
     // Variables
-     private bool IsEvolved = false;
+    private bool IsEvolved;
+    public bool IsInBattle; // Is the character in battle? (used for the UI)
 
     // Health
     [Header("Health")]
     [SerializeField]
-    private int MaxHealth = 0;
-    public int Health = 0;
+    private int MaxHealth;
+    public int Health;
     [SerializeField]
-    private int HealthCap = 0;
+    private int HealthCap;
 
     // Damage
     [Header("Damage")]
     [SerializeField]
-    private int MaxDamage = 0;
-    public int Damage = 0;
+    private int MaxDamage;
+    public int Damage;
     [SerializeField]
-    private int DamageCap = 0;
+    private int DamageCap;
 
     // Stamina
     [Header("Stamina")]
     private const float MaxStamina = 1f;
-    public float Stamina = 0f;
+    public float Stamina;
     [SerializeField][Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] // Max Stamina Regen Rate is still to be decided
-    private float StaminaRecoveryRate = 0f;
-    public int StaminaCount = 0; // How many points of stamina the character currently has
+    private float StaminaRecoveryRate;
+    //public int StaminaCount = 0; // How many points of stamina the character currently has // Might not use this variable, depends on time
 
     // Experience
     [Header("Experience")]
@@ -50,11 +51,26 @@ public class BaseCharacter : MonoBehaviour
     {
         // Setting the components & variables
         spriteRenderer = GetComponent<SpriteRenderer>();
+        team = GetComponent<Team>();
         UpdateSprite();
+    }
+
+    public void StartBattle()
+    {
+        IsInBattle = true; // Set the character as in battle
 
         Health = MaxHealth;
         Damage = MaxDamage;
-        Stamina = MaxStamina * 0.75f; // Start the battle with a bit of stamina
+        Stamina = 0; // Start the battle with no stamina
+        //StaminaCount = 0; // Start the battle with no stamina points
+
+        // Show the battle screen
+    }
+
+    public void EndBattle()
+    {
+        // Hide the battle screen
+        IsInBattle = false;
     }
 
     private void FixedUpdate()
@@ -66,17 +82,30 @@ public class BaseCharacter : MonoBehaviour
         {
             // Reset the stamina and raise the stamina count by 1
             Stamina = 0f;
-            StaminaCount++;
+            //StaminaCount++;
             // Use the basic attack when the bar fills up
             BasicAttack();
         }
+
+        // Update the stamina bar and health count
     }
 
     private void BasicAttack()
     {
-        var aliveEnemies = team.EnemyTeam.SelectedCharacters
-            .Where(enemy => enemy.Health > 0)
-            .ToList();
+        // Find the enemy team
+        Team[] teams = FindObjectsByType<Team>(FindObjectsSortMode.None);
+        Team enemyTeam;
+
+        if (team.isPlayer)
+            enemyTeam = teams[1];
+        else
+            enemyTeam = teams[0];
+
+        // Find a random enemy to attack
+        var aliveEnemies = enemyTeam.SelectedCharacters
+        .Select(go => go.GetComponent<BaseCharacter>()) // get the script from each GameObject
+        .Where(character => character != null && character.Health > 0)
+        .ToList();
 
         if (aliveEnemies.Count == 0)
         {
@@ -84,6 +113,7 @@ public class BaseCharacter : MonoBehaviour
             return;
         }
 
+        // Attack the enemy
         int selectedIndex = Random.Range(0, aliveEnemies.Count);
         BaseCharacter selectedEnemy = aliveEnemies[selectedIndex];
 
@@ -107,7 +137,7 @@ public class BaseCharacter : MonoBehaviour
         // Make the character useless
         StaminaRecoveryRate = 0f;
         Stamina = 0;
-        StaminaCount = 0;
+        //StaminaCount = 0;
     }
 
     public void LevelUp(int amount)

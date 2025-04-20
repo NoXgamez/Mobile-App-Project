@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Team : MonoBehaviour
 {
-    public BaseCharacter[] SelectedCharacters = new BaseCharacter[4];
-    public BaseCharacter[] AllCharacters;
-    public Team EnemyTeam;
+    public GameObject[] SelectedCharacters = new GameObject[4];
+    public bool isPlayer = false;
 }
