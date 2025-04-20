@@ -11,25 +11,26 @@ public class BaseCharacter : MonoBehaviour
     [Tooltip("Base should be 0, devil should be 1, angel should be 2")]
     public Sprite[] Evolutions;
     private SpriteRenderer spriteRenderer;
+
     [SerializeField]
     private Team team;
 
     // Variables
-    private bool IsEvolved;
-    public bool IsInBattle; // Is the character in battle? (used for the UI)
+    [Header("Character Info")]
+    public string Id; // Unique identifier for the character
+    public string Name;
+    public bool IsEvolved;
 
     // Health
     [Header("Health")]
     [SerializeField]
-    private int MaxHealth;
+    public int MaxHealth;
     public int Health;
     [SerializeField]
     private int HealthCap;
 
     // Damage
     [Header("Damage")]
-    [SerializeField]
-    private int MaxDamage;
     public int Damage;
     [SerializeField]
     private int DamageCap;
@@ -39,7 +40,7 @@ public class BaseCharacter : MonoBehaviour
     private const float MaxStamina = 1f;
     public float Stamina;
     [SerializeField][Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] // Max Stamina Regen Rate is still to be decided
-    private float StaminaRecoveryRate;
+    public float StaminaRecoveryRate;
     //public int StaminaCount = 0; // How many points of stamina the character currently has // Might not use this variable, depends on time
 
     // Experience
@@ -53,24 +54,6 @@ public class BaseCharacter : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         team = GetComponent<Team>();
         UpdateSprite();
-    }
-
-    public void StartBattle()
-    {
-        IsInBattle = true; // Set the character as in battle
-
-        Health = MaxHealth;
-        Damage = MaxDamage;
-        Stamina = 0; // Start the battle with no stamina
-        //StaminaCount = 0; // Start the battle with no stamina points
-
-        // Show the battle screen
-    }
-
-    public void EndBattle()
-    {
-        // Hide the battle screen
-        IsInBattle = false;
     }
 
     private void FixedUpdate()
@@ -103,9 +86,9 @@ public class BaseCharacter : MonoBehaviour
 
         // Find a random enemy to attack
         var aliveEnemies = enemyTeam.SelectedCharacters
-        .Select(go => go.GetComponent<BaseCharacter>()) // get the script from each GameObject
-        .Where(character => character != null && character.Health > 0)
-        .ToList();
+            .Select(obj => obj.GetComponent<BaseCharacter>()) // get the script from each GameObject
+            .Where(character => character != null && character.Health > 0)
+            .ToList();
 
         if (aliveEnemies.Count == 0)
         {
