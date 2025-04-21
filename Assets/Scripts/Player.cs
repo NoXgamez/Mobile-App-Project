@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -12,24 +13,28 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject); // This will make the object persist between scenes
+        //DontDestroyOnLoad(this.gameObject); // This will make the object persist between scenes
 
         // Get the storage and team components
         storage = GetComponentInChildren<Storage>();
         team = GetComponentInChildren<Team>();
 
-        Load(); // Load the data when the game starts
+        //Load(); // Load the data when the game starts
+
+        StartBattle(); // For testing battle scene
     }
 
     public void StartBattle()
     {
         team.IsInBattle = true; // Set the character as in battle
 
-        foreach (GameObject obj in team.SelectedCharacters)
+        for (int i = 0; i < team.CharacterPrefabs.Length; i++)
         {
-            if (obj != null)
+            if (team.CharacterPrefabs != null)
             {
-                BaseCharacter c = obj.GetComponent<BaseCharacter>();
+                team.SpawnCharacter(team.CharacterPrefabs[i], i);
+
+                BaseCharacter c = team.SelectedCharacters[i].GetComponent<BaseCharacter>();
                 if (c != null)
                 {
                     c.Health = c.MaxHealth;
@@ -38,6 +43,14 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+        StartCoroutine(DelayedFindTeam());
+    }
+
+    private IEnumerator DelayedFindTeam()
+    {
+        yield return null;
+        team.FindEnemyTeam();
     }
 
     public void EndBattle()
@@ -60,7 +73,9 @@ public class Player : MonoBehaviour
                     {
                         Id = character.Id,
                         Health = character.MaxHealth,
+                        HealthCap = character.HealthCap,
                         Damage = character.Damage,
+                        DamageCap = character.DamageCap,
                         StaminaRate = character.StaminaRecoveryRate,
                         Experience = character.Experience,
                         IsEvolved = character.IsEvolved,
@@ -88,7 +103,9 @@ public class Player : MonoBehaviour
                     {
                         Id = character.Id,
                         Health = character.MaxHealth,
+                        HealthCap = character.HealthCap,
                         Damage = character.Damage,
+                        DamageCap = character.DamageCap,
                         StaminaRate = character.StaminaRecoveryRate,
                         Experience = character.Experience,
                         IsEvolved = character.IsEvolved,
@@ -179,8 +196,10 @@ public class Player : MonoBehaviour
 
     private void ApplyCharacterStats(BaseCharacter character, CharacterSaveData data)
     {
-        character.Health = data.Health;
+        character.MaxHealth = data.Health;
+        character.HealthCap = data.HealthCap;
         character.Damage = data.Damage;
+        character.DamageCap = data.DamageCap;
         character.StaminaRecoveryRate = data.StaminaRate;
         character.Experience = data.Experience;
         character.IsEvolved = data.IsEvolved;
