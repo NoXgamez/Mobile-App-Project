@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Team : MonoBehaviour
 {
+    public GameObject[] CharacterPrefabs = new GameObject[4];
     public GameObject[] SelectedCharacters = new GameObject[4];
-    public bool isPlayer = false;
+    public Vector2[] SpawnPositions = new Vector2[4];
+    //public bool isPlayer = false;
     public bool IsInBattle;
     public Team enemyTeam;
-    public BaseCharacter[] enemies = new BaseCharacter[4];
+    public GameObject[] enemies = new GameObject[4];
 
     private void Start()
     {
@@ -44,8 +46,7 @@ public class Team : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Found enemy team: {enemyTeam.name}");
-
+        /*
         for (int i = 0; i < enemyTeam.SelectedCharacters.Length; i++)
         {
             GameObject sc = enemyTeam.SelectedCharacters[i];
@@ -65,14 +66,27 @@ public class Team : MonoBehaviour
             enemies[i] = c;
             Debug.Log($"Added enemy character {c.name} to enemies[{i}]");
         }
+        */
+
+        foreach (GameObject sc in SelectedCharacters)
+            sc.GetComponent<BaseCharacter>().team = this;
+
+        for (int i = 0; i < enemyTeam.SelectedCharacters.Length; i++)
+        {
+            GameObject sc = enemyTeam.SelectedCharacters[i];
+            if (sc != null)
+                enemies[i] = sc;
+            else
+                Debug.LogWarning($"Enemy character at index {i} is null");
+        }
     }
 
-    public void SpawnCharacter(GameObject obj)
+    public void SpawnCharacter(GameObject obj, int index)
     {
-        // Spawn an instance at a specific position
-
-        // Add the instance to SelectedCharacters
-
-        // Set the characters team
+        if (obj != null)
+        {
+            GameObject instance = Instantiate(obj, SpawnPositions[index], Quaternion.identity);
+            SelectedCharacters[index] = instance;
+        }
     }
 }

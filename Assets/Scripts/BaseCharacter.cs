@@ -1,5 +1,9 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using RangeAttribute = UnityEngine.RangeAttribute;
 
 public class BaseCharacter : MonoBehaviour
 {
@@ -9,11 +13,18 @@ public class BaseCharacter : MonoBehaviour
     [Range(0, 2)]
     public int SpriteIndex;
     [Tooltip("Base should be 0, devil should be 1, angel should be 2")]
-    public Sprite[] Evolutions;
+    public Sprite[] Evolutions = new Sprite[3];
     private SpriteRenderer spriteRenderer;
 
-    [SerializeField]
     public Team team;
+
+    [Header("Character UI Components")]
+    [SerializeField]
+    TextMeshPro healthText;
+    [SerializeField]
+    TextMeshPro damageText;
+    //[SerializeField]
+    // Stamina Bar
 
     // Variables
     [Header("Character Info")]
@@ -35,7 +46,7 @@ public class BaseCharacter : MonoBehaviour
     // Stamina
     [Header("Stamina")]
     public float Stamina;
-    [SerializeField][Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] // Max Stamina Regen Rate is still to be decided
+    [Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] // Max Stamina Regen Rate is still to be decided
     public float StaminaRecoveryRate;
     private const float MaxStamina = 1f;
     //public int StaminaCount = 0; // How many points of stamina the character currently has // Might not use this variable, depends on time
@@ -50,11 +61,7 @@ public class BaseCharacter : MonoBehaviour
         // Setting the components & variables
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        //team = GetComponent<Team>(); // Enemy
-        //if (team == null)
-        //    GetComponentInParent<Team>(); // Player
-
-        UpdateSprite();
+        //UpdateSprite();
     }
 
     private void FixedUpdate()
@@ -78,25 +85,27 @@ public class BaseCharacter : MonoBehaviour
 
     private void BasicAttack()
     {
+        /*
         // Moved to Team so that it doesn't run every attack, place back here if it doesn't work there
-        //// Find the enemy team
-        //Team[] teams = FindObjectsByType<Team>(FindObjectsSortMode.None);
-        //Team enemyTeam = null;
+        // Find the enemy team
+        Team[] teams = FindObjectsByType<Team>(FindObjectsSortMode.None);
+        Team enemyTeam = null;
 
-        //foreach (Team t in teams)
-        //{
-        //    if (t != team)
-        //    {
-        //        enemyTeam = t;
-        //        break;
-        //    }
-        //}
+        foreach (Team t in teams)
+        {
+            if (t != team)
+            {
+                enemyTeam = t;
+                break;
+            }
+        }
 
-        //if (enemyTeam == null)
-        //{
-        //    Debug.Log("No enemy team found.");
-        //    return;
-        //}
+        if (enemyTeam == null)
+        {
+            Debug.Log("No enemy team found.");
+            return;
+        }
+        */
 
         if (team == null)
         {
@@ -110,9 +119,26 @@ public class BaseCharacter : MonoBehaviour
         }
 
         // Find a random enemy to attack
-        var aliveEnemies = team.enemies
-            .Where(character => character.Health > 0)
-            .ToList();
+        //var aliveEnemies = team.enemies
+        //    .Where(character => character.Health > 0)
+        //    .ToList();
+
+        List<GameObject> aliveEnemies = new List<GameObject>();
+        foreach (GameObject enemy in team.enemies)
+        {
+            if (enemy != null && enemy.GetComponent<BaseCharacter>().Health > 0)
+            {
+                aliveEnemies.Add(enemy);
+            }
+            else if (enemy == null)
+            {
+                Debug.LogWarning($"Enemy character is null in {name}'s enemies list.");
+            }
+            else
+            {
+                Debug.LogWarning($"Enemy character {enemy.name} is dead.");
+            }
+        }
 
         if (aliveEnemies.Count == 0)
         {
@@ -122,9 +148,10 @@ public class BaseCharacter : MonoBehaviour
 
         // Attack the enemy
         int selectedIndex = Random.Range(0, aliveEnemies.Count);
-        BaseCharacter selectedEnemy = aliveEnemies[selectedIndex];
+        GameObject selectedEnemy = aliveEnemies[selectedIndex];
 
-        selectedEnemy.UpdateHealth(-Damage);
+        Debug.Log($"{name} is attacking {selectedEnemy.name} for {Damage} damage.");
+        selectedEnemy.GetComponent<BaseCharacter>().UpdateHealth(-Damage);
     }
 
     public void UpdateHealth(int amount)
