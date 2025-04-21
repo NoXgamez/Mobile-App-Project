@@ -74,17 +74,28 @@ public class BaseCharacter : MonoBehaviour
 
     private void BasicAttack()
     {
-        // Find the enemy team
-        Team[] teams = FindObjectsByType<Team>(FindObjectsSortMode.None);
-        Team enemyTeam;
+        // Moved to Team so that it doesn't run every attack, place back here if it doesn't work there
+        //// Find the enemy team
+        //Team[] teams = FindObjectsByType<Team>(FindObjectsSortMode.None);
+        //Team enemyTeam = null;
 
-        if (team.isPlayer)
-            enemyTeam = teams[1];
-        else
-            enemyTeam = teams[0];
+        //foreach (Team t in teams)
+        //{
+        //    if (t != team)
+        //    {
+        //        enemyTeam = t;
+        //        break;
+        //    }
+        //}
+
+        //if (enemyTeam == null)
+        //{
+        //    Debug.Log("No enemy team found.");
+        //    return;
+        //}
 
         // Find a random enemy to attack
-        var aliveEnemies = enemyTeam.SelectedCharacters
+        var aliveEnemies = team.enemyTeam.SelectedCharacters
             .Select(obj => obj.GetComponent<BaseCharacter>()) // get the script from each GameObject
             .Where(character => character != null && character.Health > 0)
             .ToList();
