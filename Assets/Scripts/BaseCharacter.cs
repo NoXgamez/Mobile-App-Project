@@ -58,19 +58,21 @@ public class BaseCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Passively increase stamina
-        Stamina += StaminaRecoveryRate;
-
-        if (Stamina >= MaxStamina)
+        if (team.IsInBattle)
         {
-            // Reset the stamina and raise the stamina count by 1
-            Stamina = 0f;
-            //StaminaCount++;
-            // Use the basic attack when the bar fills up
-            BasicAttack();
-        }
+            // Passively increase stamina
+            Stamina += StaminaRecoveryRate;
 
-        // Update the stamina bar and health count
+            if (Stamina >= MaxStamina)
+            {
+                // Reset the stamina and raise the stamina count by 1
+                Stamina = 0f;
+                //StaminaCount++;
+                // Use the basic attack when the bar fills up
+                BasicAttack();
+            }
+            // Update the stamina bar and health count
+        }
     }
 
     private void BasicAttack()
@@ -176,10 +178,10 @@ public class BaseCharacter : MonoBehaviour
                 break;
             case Stat.Damage:
                 // Increase the damage
-                MaxDamage += amount;
+                Damage += amount;
                 // Ensure the damage doesn't surpass the cap
-                if (MaxDamage > DamageCap)
-                    MaxDamage = DamageCap;
+                if (Damage > DamageCap)
+                    Damage = DamageCap;
                 break;
         }
     }
