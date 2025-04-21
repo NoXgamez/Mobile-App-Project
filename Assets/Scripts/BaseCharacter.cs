@@ -13,7 +13,7 @@ public class BaseCharacter : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     [SerializeField]
-    private Team team;
+    public Team team;
 
     // Variables
     [Header("Character Info")]
@@ -34,10 +34,10 @@ public class BaseCharacter : MonoBehaviour
 
     // Stamina
     [Header("Stamina")]
-    private const float MaxStamina = 1f;
     public float Stamina;
     [SerializeField][Tooltip("How much should the stamina recover every second")][Range(0f, 0.3f)] // Max Stamina Regen Rate is still to be decided
     public float StaminaRecoveryRate;
+    private const float MaxStamina = 1f;
     //public int StaminaCount = 0; // How many points of stamina the character currently has // Might not use this variable, depends on time
 
     // Experience
@@ -49,7 +49,11 @@ public class BaseCharacter : MonoBehaviour
     {
         // Setting the components & variables
         spriteRenderer = GetComponent<SpriteRenderer>();
-        team = GetComponent<Team>();
+
+        //team = GetComponent<Team>(); // Enemy
+        //if (team == null)
+        //    GetComponentInParent<Team>(); // Player
+
         UpdateSprite();
     }
 
@@ -58,7 +62,7 @@ public class BaseCharacter : MonoBehaviour
         if (team.IsInBattle)
         {
             // Passively increase stamina
-            Stamina += StaminaRecoveryRate;
+            Stamina += StaminaRecoveryRate * Time.deltaTime;
 
             if (Stamina >= MaxStamina)
             {
@@ -94,10 +98,20 @@ public class BaseCharacter : MonoBehaviour
         //    return;
         //}
 
+        if (team == null)
+        {
+            Debug.LogError($"{name} tried to attack but has no team assigned!");
+            return;
+        }
+        if (team.enemies == null || team.enemies.Length == 0)
+        {
+            Debug.LogError($"{name} has an empty enemies array!");
+            return;
+        }
+
         // Find a random enemy to attack
-        var aliveEnemies = team.enemyTeam.SelectedCharacters
-            .Select(obj => obj.GetComponent<BaseCharacter>()) // get the script from each GameObject
-            .Where(character => character != null && character.Health > 0)
+        var aliveEnemies = team.enemies
+            .Where(character => character.Health > 0)
             .ToList();
 
         if (aliveEnemies.Count == 0)

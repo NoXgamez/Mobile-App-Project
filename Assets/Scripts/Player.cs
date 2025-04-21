@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject); // This will make the object persist between scenes
+        //DontDestroyOnLoad(this.gameObject); // This will make the object persist between scenes
 
         // Get the storage and team components
         storage = GetComponentInChildren<Storage>();
@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
         {
             if (obj != null)
             {
+                team.SpawnCharacter(obj);
+
                 BaseCharacter c = obj.GetComponent<BaseCharacter>();
                 if (c != null)
                 {
@@ -38,6 +40,8 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+        team.FindEnemyTeam();
     }
 
     public void EndBattle()
