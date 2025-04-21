@@ -60,7 +60,9 @@ public class Player : MonoBehaviour
                     {
                         Id = character.Id,
                         Health = character.MaxHealth,
+                        HealthCap = character.HealthCap,
                         Damage = character.Damage,
+                        DamageCap = character.DamageCap,
                         StaminaRate = character.StaminaRecoveryRate,
                         Experience = character.Experience,
                         IsEvolved = character.IsEvolved,
@@ -88,7 +90,9 @@ public class Player : MonoBehaviour
                     {
                         Id = character.Id,
                         Health = character.MaxHealth,
+                        HealthCap = character.HealthCap,
                         Damage = character.Damage,
+                        DamageCap = character.DamageCap,
                         StaminaRate = character.StaminaRecoveryRate,
                         Experience = character.Experience,
                         IsEvolved = character.IsEvolved,
@@ -179,8 +183,10 @@ public class Player : MonoBehaviour
 
     private void ApplyCharacterStats(BaseCharacter character, CharacterSaveData data)
     {
-        character.Health = data.Health;
+        character.MaxHealth = data.Health;
+        character.HealthCap = data.HealthCap;
         character.Damage = data.Damage;
+        character.DamageCap = data.DamageCap;
         character.StaminaRecoveryRate = data.StaminaRate;
         character.Experience = data.Experience;
         character.IsEvolved = data.IsEvolved;

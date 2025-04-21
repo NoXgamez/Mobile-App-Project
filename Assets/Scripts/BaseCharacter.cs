@@ -23,17 +23,14 @@ public class BaseCharacter : MonoBehaviour
 
     // Health
     [Header("Health")]
-    [SerializeField]
     public int MaxHealth;
     public int Health;
-    [SerializeField]
-    private int HealthCap;
+    public int HealthCap;
 
     // Damage
     [Header("Damage")]
     public int Damage;
-    [SerializeField]
-    private int DamageCap;
+    public int DamageCap;
 
     // Stamina
     [Header("Stamina")]

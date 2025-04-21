@@ -5,7 +5,9 @@ public class CharacterSaveData
 {
     public string Id;
     public int Health;
+    public int HealthCap;
     public int Damage;
+    public int DamageCap;
     public float StaminaRate;
     public int Experience;
     public bool IsEvolved;
