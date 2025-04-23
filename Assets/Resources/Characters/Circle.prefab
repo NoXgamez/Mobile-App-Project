@@ -102,9 +102,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteIndex: 0
   Evolutions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: ab4ae9efc263fa9439e4477b475fe17c, type: 3}
+  - {fileID: 21300000, guid: ab4ae9efc263fa9439e4477b475fe17c, type: 3}
+  - {fileID: 21300000, guid: ab4ae9efc263fa9439e4477b475fe17c, type: 3}
   team: {fileID: 0}
   healthText: {fileID: 0}
   damageText: {fileID: 0}
