@@ -7,9 +7,9 @@ public class Player : MonoBehaviour
 {
     // Components
     [SerializeField]
-    private Storage storage;
+    public Storage storage;
     [SerializeField]
-    private Team team;
+    public Team team;
 
     void Start()
     {
