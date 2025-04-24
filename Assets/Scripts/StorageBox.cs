@@ -20,6 +20,7 @@ public class StorageBox : MonoBehaviour
     private void OnEnable()
     {
         Player player = Player.GetComponent<Player>();
+        playerStorage = new GameObject[player.storage.CharactersStored.Count];
 
         for (int i = 0; i < PlayerCharactersListItems.Length; i++)
         {
@@ -30,9 +31,35 @@ public class StorageBox : MonoBehaviour
             playerTeam[i] = PlayerCharactersListItems[i];
         }
 
+        /*
         for (int i = 0; i < player.storage.CharactersStored.Count; i++)
         {
             GameObject obj = Instantiate(BoxSlot, Box.transform);
+            obj.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(obj));
+            obj.GetComponent<BoxSlot>().CharacterImage.sprite = player.storage.CharactersStored[i].GetComponent<SpriteRenderer>().sprite;
+            playerStorage[i] = obj;
+        }
+        */
+
+        /*
+        for (int i = 0; i < player.storage.CharactersStored.Count; i++)
+        {
+            GameObject obj = Instantiate(BoxSlot, Box.transform);
+
+            GameObject capturedObj = obj; // Capture the current obj for this iteration
+            obj.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(capturedObj));
+
+            obj.GetComponent<BoxSlot>().CharacterImage.sprite =
+                player.storage.CharactersStored[i].GetComponent<SpriteRenderer>().sprite;
+
+            playerStorage[i] = obj;
+        }
+        */
+
+        for (int i = 0; i < player.storage.CharactersStored.Count; i++)
+        {
+            GameObject obj = Instantiate(BoxSlot, Box.transform);
+            obj.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(obj));
             obj.GetComponent<BoxSlot>().CharacterImage.sprite = player.storage.CharactersStored[i].GetComponent<SpriteRenderer>().sprite;
             playerStorage[i] = obj;
         }

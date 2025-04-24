@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7111637826328408131}
   - component: {fileID: 2655960702281346867}
   - component: {fileID: 1063984164980130671}
+  - component: {fileID: 1189323068160326281}
   m_Layer: 5
   m_Name: BoxSlot
   m_TagString: Untagged
@@ -121,6 +122,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1189323068160326281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291171123931591450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed292ca4f854344fa3d096536e14939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharacterImage: {fileID: 6189238178879300134}
 --- !u!1 &4240385062649195407
 GameObject:
   m_ObjectHideFlags: 0
