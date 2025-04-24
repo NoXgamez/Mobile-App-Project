@@ -20,6 +20,7 @@ public class StorageBox : MonoBehaviour
     private void OnEnable()
     {
         Player player = Player.GetComponent<Player>();
+        playerTeam = PlayerCharactersListItems;
         playerStorage = new GameObject[player.storage.CharactersStored.Count];
 
         for (int i = 0; i < PlayerCharactersListItems.Length; i++)
@@ -97,24 +98,47 @@ public class StorageBox : MonoBehaviour
         if (SelectedCharacters[0] == null)
         {
             SelectedCharacters[0] = obj; // Add the character to the first slot
-            CheckAreBothCharactersSelected();
-            return;
         }
         else if (SelectedCharacters[1] == null)
         {
             SelectedCharacters[1] = obj; // Add the character to the second slot
-            CheckAreBothCharactersSelected();
-            return;
         }
         else if (SelectedCharacters[0] == obj)
         {
             SelectedCharacters[0] = null; // Deselect the character
-            return;
         }
         else if (SelectedCharacters[1] == obj)
         {
             SelectedCharacters[1] = null; // Deselect the character
-            return;
+        }
+
+        CheckAreBothCharactersSelected();
+    }
+
+    private void UpdatePartyUI()
+    {
+        Player player = Player.GetComponent<Player>();
+
+        for (int i = 0; i < PlayerCharactersListItems.Length; i++)
+        {
+            var slot = PlayerCharactersListItems[i].GetComponentInChildren<PartySlot>();
+            GameObject character = player.team.SelectedCharacters[i];
+
+            slot.CharacterImage.sprite = character.GetComponent<SpriteRenderer>().sprite;
+            slot.CharacterName.text = character.GetComponent<BaseCharacter>().name;
+            slot.CharacterStats.text = $"H: {character.GetComponent<BaseCharacter>().MaxHealth} D: {character.GetComponent<BaseCharacter>().Damage}";
+        }
+    }
+
+    private void UpdateStorageUI()
+    {
+        Player player = Player.GetComponent<Player>();
+
+        for (int i = 0; i < playerStorage.Length; i++)
+        {
+            GameObject character = player.storage.CharactersStored[i];
+            BoxSlot boxSlot = playerStorage[i].GetComponent<BoxSlot>();
+            boxSlot.CharacterImage.sprite = character.GetComponent<SpriteRenderer>().sprite;
         }
     }
 
@@ -127,8 +151,8 @@ public class StorageBox : MonoBehaviour
             if (playerTeam.Contains(SelectedCharacters[0]) && playerStorage.Contains(SelectedCharacters[1]))
             {
                 // Get the indexes of the characters in the box and the party
-                int i = player.storage.CharactersStored.IndexOf(SelectedCharacters[1]);
-                int j = System.Array.IndexOf(player.team.SelectedCharacters, SelectedCharacters[0]);
+                int i = System.Array.IndexOf(playerStorage, SelectedCharacters[1]);
+                int j = System.Array.IndexOf(playerTeam, SelectedCharacters[0]);
 
                 // Create an instance of the characters
                 GameObject character0 = player.storage.CharactersStored[i];
@@ -141,8 +165,8 @@ public class StorageBox : MonoBehaviour
             else if (playerTeam.Contains(SelectedCharacters[1]) && playerStorage.Contains(SelectedCharacters[0]))
             {
                 // Get the indexes of the characters in the box and the party
-                int i = player.storage.CharactersStored.IndexOf(SelectedCharacters[0]);
-                int j = System.Array.IndexOf(player.team.SelectedCharacters, SelectedCharacters[1]);
+                int i = System.Array.IndexOf(playerStorage, SelectedCharacters[0]);
+                int j = System.Array.IndexOf(playerTeam, SelectedCharacters[1]);
 
                 // Create an instance of the characters
                 GameObject character0 = player.storage.CharactersStored[i];
@@ -155,8 +179,8 @@ public class StorageBox : MonoBehaviour
             else if (playerStorage.Contains(SelectedCharacters[0]) && playerStorage.Contains(SelectedCharacters[1]))
             {
                 // Get the indexes of the characters in the box
-                int i = player.storage.CharactersStored.IndexOf(SelectedCharacters[0]);
-                int j = player.storage.CharactersStored.IndexOf(SelectedCharacters[1]);
+                int i = System.Array.IndexOf(playerStorage, SelectedCharacters[0]);
+                int j = System.Array.IndexOf(playerStorage, SelectedCharacters[1]);
 
                 // Create an instance of the characters
                 GameObject character0 = player.storage.CharactersStored[i];
@@ -169,8 +193,8 @@ public class StorageBox : MonoBehaviour
             else if (playerTeam.Contains(SelectedCharacters[0]) && playerTeam.Contains(SelectedCharacters[1]))
             {
                 // Get the indexes of the characters in the party
-                int i = System.Array.IndexOf(player.team.SelectedCharacters, SelectedCharacters[0]);
-                int j = System.Array.IndexOf(player.team.SelectedCharacters, SelectedCharacters[1]);
+                int i = System.Array.IndexOf(playerTeam, SelectedCharacters[0]);
+                int j = System.Array.IndexOf(playerTeam, SelectedCharacters[1]);
 
                 // Create an instance of the characters
                 GameObject character0 = player.team.SelectedCharacters[i];
@@ -180,6 +204,10 @@ public class StorageBox : MonoBehaviour
                 player.team.SelectedCharacters[i] = character1;
                 player.team.SelectedCharacters[j] = character0;
             }
+
+            // Update the UI for both the party and the storage
+            UpdatePartyUI();
+            UpdateStorageUI();
 
             // Deselect both characters
             SelectedCharacters[0] = null;
