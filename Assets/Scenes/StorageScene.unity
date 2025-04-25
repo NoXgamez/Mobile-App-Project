@@ -519,20 +519,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 63471044887653247, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: CharactersStored.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 63471044887653247, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: 'CharactersStored.Array.data[0]'
       value: 
-      objectReference: {fileID: 4501841054776381500, guid: c94c42644ee3fe24a81e92ff13c3f00a, type: 3}
+      objectReference: {fileID: 4501841054776381500, guid: 6b319da6f0b1c0946839986828360f33, type: 3}
     - target: {fileID: 63471044887653247, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: 'CharactersStored.Array.data[1]'
       value: 
-      objectReference: {fileID: 4501841054776381500, guid: c94c42644ee3fe24a81e92ff13c3f00a, type: 3}
+      objectReference: {fileID: 4501841054776381500, guid: 3c4464eaf03b01e4da95bdc0cffb047a, type: 3}
     - target: {fileID: 63471044887653247, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: 'CharactersStored.Array.data[2]'
       value: 
-      objectReference: {fileID: 4501841054776381500, guid: c94c42644ee3fe24a81e92ff13c3f00a, type: 3}
+      objectReference: {fileID: 4501841054776381500, guid: 4475dcb25a6f6984dbcaaa909db66cc1, type: 3}
     - target: {fileID: 63471044887653247, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: 'CharactersStored.Array.data[3]'
       value: 
@@ -544,7 +544,7 @@ PrefabInstance:
     - target: {fileID: 1407750375711917782, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: 'SelectedCharacters.Array.data[0]'
       value: 
-      objectReference: {fileID: 8191364797496548036, guid: cf0341f98bbaf5843ac918c54c1bdf79, type: 3}
+      objectReference: {fileID: 4501841054776381500, guid: 4475dcb25a6f6984dbcaaa909db66cc1, type: 3}
     - target: {fileID: 1407750375711917782, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: 'SelectedCharacters.Array.data[1]'
       value: 
@@ -556,7 +556,7 @@ PrefabInstance:
     - target: {fileID: 1407750375711917782, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: 'SelectedCharacters.Array.data[3]'
       value: 
-      objectReference: {fileID: 4501841054776381500, guid: c94c42644ee3fe24a81e92ff13c3f00a, type: 3}
+      objectReference: {fileID: 4501841054776381500, guid: 6b339bb97e8ae56419154192f09d9049, type: 3}
     - target: {fileID: 7644622317408956055, guid: 9efed54f4ad766143b9d832911af16e1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
