@@ -28,11 +28,11 @@ public class Player : MonoBehaviour
     {
         team.IsInBattle = true; // Set the character as in battle
 
-        for (int i = 0; i < team.CharacterPrefabs.Length; i++)
+        for (int i = 0; i < team.SelectedCharacters.Length; i++)
         {
-            if (team.CharacterPrefabs != null)
+            if (team.SelectedCharacters != null)
             {
-                team.SpawnCharacter(team.CharacterPrefabs[i], i);
+                team.SpawnCharacter(team.SelectedCharacters[i], i);
 
                 BaseCharacter c = team.SelectedCharacters[i].GetComponent<BaseCharacter>();
                 if (c != null)

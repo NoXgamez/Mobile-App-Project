@@ -1089,6 +1089,7 @@ MonoBehaviour:
   SelectedCharacters:
   - {fileID: 0}
   - {fileID: 0}
+  defaultColor: {r: 0.21960784, g: 0.21960784, b: 0.21960784, a: 0.78431374}
 --- !u!1 &1881759966
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,6 +1263,10 @@ PrefabInstance:
     - target: {fileID: 1914156916957315794, guid: 1bb8da6eb05a99341a02547aa54668bd, type: 3}
       propertyPath: m_Name
       value: PartySlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2920785664104603317, guid: 1bb8da6eb05a99341a02547aa54668bd, type: 3}
+      propertyPath: m_Color.a
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 2986469378699026632, guid: 1bb8da6eb05a99341a02547aa54668bd, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
