@@ -13,6 +13,7 @@ public class StorageBox : MonoBehaviour
 
     // Variables
     public GameObject[] SelectedCharacters = new GameObject[2];
+    public Color defaultColor;
 
     private GameObject[] playerTeam = new GameObject[4]; // Instance of player's team
     private GameObject[] playerStorage; // Instance of player's storage
@@ -98,18 +99,22 @@ public class StorageBox : MonoBehaviour
         if (SelectedCharacters[0] == null)
         {
             SelectedCharacters[0] = obj; // Add the character to the first slot
+            SelectedCharacters[0].GetComponent<Image>().color = new Color(255, 200, 0, 255);
         }
         else if (SelectedCharacters[1] == null)
         {
             SelectedCharacters[1] = obj; // Add the character to the second slot
+            SelectedCharacters[1].GetComponent<Image>().color = new Color(255, 200, 0, 255);
         }
         else if (SelectedCharacters[0] == obj)
         {
             SelectedCharacters[0] = null; // Deselect the character
+            SelectedCharacters[0].GetComponent<Image>().color = defaultColor;
         }
         else if (SelectedCharacters[1] == obj)
         {
             SelectedCharacters[1] = null; // Deselect the character
+            SelectedCharacters[1].GetComponent<Image>().color = defaultColor;
         }
 
         CheckAreBothCharactersSelected();
@@ -161,6 +166,10 @@ public class StorageBox : MonoBehaviour
                 // Swap the characters in the box and between inventory and box
                 player.storage.CharactersStored[i] = character1;
                 player.team.SelectedCharacters[j] = character0;
+
+                // Reset the colours
+                SelectedCharacters[0].GetComponent<Image>().color = defaultColor;
+                SelectedCharacters[1].GetComponent<Image>().color = defaultColor;
             }
             else if (playerTeam.Contains(SelectedCharacters[1]) && playerStorage.Contains(SelectedCharacters[0]))
             {
@@ -175,6 +184,10 @@ public class StorageBox : MonoBehaviour
                 // Swap the characters in the box and between inventory and box
                 player.storage.CharactersStored[i] = character1;
                 player.team.SelectedCharacters[j] = character0;
+
+                // Reset the colours
+                SelectedCharacters[0].GetComponent<Image>().color = defaultColor;
+                SelectedCharacters[1].GetComponent<Image>().color = defaultColor;
             }
             else if (playerStorage.Contains(SelectedCharacters[0]) && playerStorage.Contains(SelectedCharacters[1]))
             {
@@ -189,6 +202,10 @@ public class StorageBox : MonoBehaviour
                 // Swap the position of the characters in the box
                 player.storage.CharactersStored[i] = character1;
                 player.storage.CharactersStored[j] = character0;
+
+                // Reset the colours
+                SelectedCharacters[0].GetComponent<Image>().color = defaultColor;
+                SelectedCharacters[1].GetComponent<Image>().color = defaultColor    ;
             }
             else if (playerTeam.Contains(SelectedCharacters[0]) && playerTeam.Contains(SelectedCharacters[1]))
             {
@@ -203,6 +220,10 @@ public class StorageBox : MonoBehaviour
                 // Swap the position of the characters in the party
                 player.team.SelectedCharacters[i] = character1;
                 player.team.SelectedCharacters[j] = character0;
+
+                // Reset the colours
+                SelectedCharacters[0].GetComponent<Image>().color = defaultColor;
+                SelectedCharacters[1].GetComponent<Image>().color = defaultColor;
             }
 
             // Update the UI for both the party and the storage
