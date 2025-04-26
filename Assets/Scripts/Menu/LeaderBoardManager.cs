@@ -10,7 +10,8 @@ public class LeaderBoardManager : MonoBehaviour
     
     private bool initialized = false;
     private bool eventsInitialized = false;
-    
+    [SerializeField] GameObject AuthUI;
+    [SerializeField] GameObject MenuUI;
     private static LeaderBoardManager singleton = null;
 
     public static LeaderBoardManager Singleton
@@ -66,10 +67,13 @@ public class LeaderBoardManager : MonoBehaviour
 
             if (AuthenticationService.Instance.SessionTokenExists)
             {
+
+                MenuUI.SetActive(true);
                 SignInAnonymouslyAsync();
             }
             else
             {
+               MenuUI.SetActive(false);
                 PanelManager.Open("auth");
             }
         }
@@ -133,11 +137,12 @@ public class LeaderBoardManager : MonoBehaviour
     public void SignOut()
     {
         AuthenticationService.Instance.SignOut();
+        MenuUI.SetActive(false);
         PanelManager.CloseAll();
         PanelManager.Open("auth");
     }
     
-    private void SetupEvents()
+    public void SetupEvents()
     {
         eventsInitialized = true;
         AuthenticationService.Instance.SignedIn += () =>
@@ -148,6 +153,7 @@ public class LeaderBoardManager : MonoBehaviour
         AuthenticationService.Instance.SignedOut += () =>
         {
             PanelManager.CloseAll();
+            MenuUI.SetActive(false);
             PanelManager.Open("auth");
         };
         
@@ -173,7 +179,7 @@ public class LeaderBoardManager : MonoBehaviour
                 await AuthenticationService.Instance.UpdatePlayerNameAsync("Player");
             }
             PanelManager.CloseAll();
-            PanelManager.Open("main");
+            MenuUI.SetActive(true);
         }
         catch
         {
