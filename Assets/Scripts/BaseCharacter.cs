@@ -142,8 +142,14 @@ public class BaseCharacter : MonoBehaviour
 
         if (aliveEnemies.Count == 0)
         {
-            Debug.Log("No valid targets to attack.");
-            return;
+            if (team.IsPlayer)
+            {
+                team.gm.EndBattle(true);
+            }
+            else
+            {
+                team.gm.EndBattle(false);
+            }
         }
 
         // Attack the enemy

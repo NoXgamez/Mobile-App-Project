@@ -6,14 +6,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.Services.Authentication;
 
 public class MenuManager : MonoBehaviour
 {
+    [SerializeField]
+    LeaderboardsMenu LDM;
+    
     // Vars
     [Header("Frames")]
     [SerializeField] GameObject ButtonsFrame;
     [SerializeField] GameObject MenuFrame;
-
+   
     [Header("Buttons")]
     [SerializeField] Button PlayBtn;
     [SerializeField] Button ProfileBtn;
@@ -25,7 +29,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Button LeftBtn;
     [SerializeField] Button RightBtn;
     [SerializeField] Button LoadMapBtn;
-
+    [SerializeField] private Button logoutButton = null;
     [Header("Panels")]
     [SerializeField] GameObject PlayMenu;
     [SerializeField] GameObject ProfileMenu;
@@ -33,7 +37,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject SkillTreeMenu;
     [SerializeField] GameObject ShopMenu;
     [SerializeField] GameObject SettingsMenu;
-
+    
     [Header("MapMenus")]
     [SerializeField] List<GameObject> Maps;
 
@@ -67,7 +71,8 @@ public class MenuManager : MonoBehaviour
                 InventoryMenu.SetActive(true);
                 break;
             case 4:
-                SkillTreeMenu.SetActive(true);
+                LDM.Open();
+                //SkillTreeMenu.SetActive(true);
                 break;
             case 5:
                 ShopMenu.SetActive(true);
@@ -115,32 +120,28 @@ public class MenuManager : MonoBehaviour
         Maps[MapCounter].SetActive(true);
     }
 
-    //private void LoadMap()
-    //{
-    //    string name = Maps[MapCounter].name;
-    //    string mapName = name.Replace("Map_[", "").Replace("]_Panel", "");
-    //    GameObject map = MapPrefabs.FirstOrDefault(m => m.name.Contains(mapName));
-
-    //    if (map != null)
-    //    {
-    //        //Debug.Log($"Map was found!: {map.name}, and is being spawned!");
-    //        //Vector3 SP = new Vector3(0, 0, 100);
-    //        //Instantiate(map, SP, Quaternion.identity);
-
-    //        Debug.Log($"Map was found!: {map.name}, loading into game scene!");
-    //        GameData.MapName = map.name;
-    //        SceneManager.LoadScene("GameScene");
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning($"Map was not found!: {mapName}");
-    //    }
-    //}
-
-
     private void Start()
     {
+        
+        // Correct singleton usage
+        LeaderBoardManager.Singleton.SetupEvents();
+
+        // You want to wait until sign-in before setting up the menus/buttons
+        if (AuthenticationService.Instance.IsSignedIn)
+        {
+            // If already signed in, immediately call it
+            OnSignedIn();
+        }
+        else
+        {
+            // Otherwise wait for sign-in event
+            AuthenticationService.Instance.SignedIn += OnSignedIn;
+        }
+    }
+    private void OnSignedIn()
+    {
         Menus(0);
+
         PlayBtn.onClick.AddListener(() => Menus(1));
         ProfileBtn.onClick.AddListener(() => Menus(2));
         InventoryBtn.onClick.AddListener(() => Menus(3));
@@ -148,9 +149,14 @@ public class MenuManager : MonoBehaviour
         ShopBtn.onClick.AddListener(() => Menus(5));
         SettingsBtn.onClick.AddListener(() => Menus(6));
         CloseBtn.onClick.AddListener(() => Menus(0));
-
+        logoutButton.onClick.AddListener(SignOut);
         LeftBtn.onClick.AddListener(() => GameSwitcher(-1));
         RightBtn.onClick.AddListener(() => GameSwitcher(1));
-        //LoadMapBtn.onClick.AddListener(() => LoadMap());
     }
+    private void SignOut()
+    {
+      
+        LeaderBoardManager.Singleton.SignOut();
+    }
+
 }

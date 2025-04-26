@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    private Team team;
+    public Team team;
 
     void Start()
     {
@@ -41,6 +40,8 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+
+        team.AssignTeam();
     }
 
     private void GetRandomCharacters()

@@ -7,6 +7,8 @@ namespace Map
 {
     public class MapView : MonoBehaviour
     {
+        public GameManager gm;
+
         public enum MapOrientation
         {
             BottomToTop,
@@ -131,6 +133,8 @@ namespace Map
             scrollNonUi.freezeY = orientation == MapOrientation.LeftToRight || orientation == MapOrientation.RightToLeft;
             BoxCollider boxCollider = mapParent.AddComponent<BoxCollider>();
             boxCollider.size = new Vector3(100, 100, 1);
+
+            gm.scenes[0] = firstParent;
         }
 
         protected void CreateNodes(IEnumerable<Node> nodes)
