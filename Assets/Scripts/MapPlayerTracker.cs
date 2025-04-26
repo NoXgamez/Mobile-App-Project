@@ -19,6 +19,7 @@ namespace Map
 
         private void Awake()
         {
+            gm = view.gm;
             Instance = this;
         }
 
@@ -79,6 +80,7 @@ namespace Map
                     gm.OpenInventory();
                     break;
                 case NodeType.Treasure:
+                    gm.OpenTreasure();
                     break;
                 case NodeType.Store:
                     break;

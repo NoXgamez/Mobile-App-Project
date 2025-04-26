@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
         }
 
         StartCoroutine(DelayedFindTeam());
+        team.AssignTeam();
     }
 
     private IEnumerator DelayedFindTeam()

@@ -4,7 +4,7 @@ public class Team : MonoBehaviour
 {
     public GameObject[] CharacterPrefabs = new GameObject[4];
     public GameObject[] SelectedCharacters = new GameObject[4];
-    public Vector2[] SpawnPositions = new Vector2[4];
+    public Vector3[] SpawnPositions = new Vector3[4];
     //public bool isPlayer = false;
     public bool IsInBattle;
     public bool IsPlayer;
@@ -12,7 +12,7 @@ public class Team : MonoBehaviour
     public Team enemyTeam;
     public GameObject[] enemies = new GameObject[4];
 
-    private void Start()
+    public void AssignTeam()
     {
         foreach (GameObject obj in SelectedCharacters)
         {
@@ -82,13 +82,22 @@ public class Team : MonoBehaviour
                 Debug.LogWarning($"Enemy character at index {i} is null");
         }
     }
+    GameObject[] instances = new GameObject[4];
 
     public void SpawnCharacter(GameObject obj, int index)
     {
         if (obj != null)
         {
-            GameObject instance = Instantiate(obj, SpawnPositions[index], Quaternion.identity);
-            SelectedCharacters[index] = instance;
+            instances[index] = Instantiate(obj, SpawnPositions[index], Quaternion.identity);
+            SelectedCharacters[index] = instances[index];
+        }
+    }
+
+    public void DespawnCharacters()
+    {
+        foreach (GameObject i in instances)
+        {
+            Destroy(i);
         }
     }
 }

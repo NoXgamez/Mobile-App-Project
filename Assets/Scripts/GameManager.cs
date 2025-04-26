@@ -5,26 +5,44 @@ public class GameManager : MonoBehaviour
 {
     public Player player;
     public Enemy enemy;
-    public GameObject[] scenes;
-    // 0 is battle
-    // 1 is inventory
-    // 2 is treasure
+    public Camera cam;
+    public GameObject[] scenes = new GameObject[4];
+    // 0 is map
+    // 1 is battle
+    // 2 is inventory
+    // 3 is treasure
 
-    public void Start()
+    private void Start()
     {
-        player.Load();
+        //player.Load();
+    }
+
+    private void GetCameraSize()
+    {
+
+    }
+
+    public void OpenMap()
+    {
+        scenes[0].gameObject.SetActive(true);
+    }
+
+    public void CloseMap()
+    {
+        scenes[0].gameObject.SetActive(false);
     }
 
     public void StartBattle()
     {
-        scenes[0].gameObject.SetActive(true);
+        CloseMap();
+        scenes[1].gameObject.SetActive(true);
         player.StartBattle();
         enemy.StartBattle();
     }
 
     public void EndBattle(bool IsPlayer)
     {
-        scenes[0].gameObject.SetActive(false);
+        scenes[1].gameObject.SetActive(false);
         player.team.IsInBattle = false;
         enemy.team.IsInBattle = false;
 
@@ -42,26 +60,29 @@ public class GameManager : MonoBehaviour
 
     public void OpenInventory()
     {
-        scenes[1].gameObject.SetActive(true);
+        CloseMap();
+        scenes[2].gameObject.SetActive(true);
     }
 
     public void CloseInventory()
     {
-        scenes[1].gameObject.SetActive(false);
+        scenes[2].gameObject.SetActive(false);
+        OpenMap();
     }
 
-    public void GetTreasure()
+    public void OpenTreasure()
     {
-        scenes[2].gameObject.SetActive(true);
+        CloseMap();
+        scenes[3].gameObject.SetActive(true);
 
         int amount = Random.Range(20, 51);
-
         StartCoroutine(CloseTreasure());
     }
 
     public IEnumerator CloseTreasure()
     {
         yield return new WaitForSeconds(2f);
-        scenes[2].gameObject.SetActive(false);
+        scenes[3].gameObject.SetActive(false);
+        OpenMap();
     }
 }

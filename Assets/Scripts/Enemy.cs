@@ -40,6 +40,8 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+
+        team.AssignTeam();
     }
 
     private void GetRandomCharacters()
