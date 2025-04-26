@@ -137,10 +137,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76593170695e3c34e92cabc2132ebdc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CharacterPrefabs:
+  - {fileID: 4501841054776381500, guid: c94c42644ee3fe24a81e92ff13c3f00a, type: 3}
+  - {fileID: 8191364797496548036, guid: cf0341f98bbaf5843ac918c54c1bdf79, type: 3}
+  - {fileID: 4501841054776381500, guid: 6b339bb97e8ae56419154192f09d9049, type: 3}
+  - {fileID: 4501841054776381500, guid: 3c4464eaf03b01e4da95bdc0cffb047a, type: 3}
   SelectedCharacters:
+  - {fileID: 4501841054776381500, guid: c94c42644ee3fe24a81e92ff13c3f00a, type: 3}
+  - {fileID: 8191364797496548036, guid: cf0341f98bbaf5843ac918c54c1bdf79, type: 3}
+  - {fileID: 4501841054776381500, guid: 6b339bb97e8ae56419154192f09d9049, type: 3}
+  - {fileID: 4501841054776381500, guid: 3c4464eaf03b01e4da95bdc0cffb047a, type: 3}
+  SpawnPositions:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  isPlayer: 1
   IsInBattle: 0
+  IsPlayer: 1
+  gm: {fileID: 0}
+  enemyTeam: {fileID: 0}
+  enemies:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

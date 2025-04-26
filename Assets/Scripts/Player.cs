@@ -6,9 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // Components
-    [SerializeField]
     public Storage storage;
-    [SerializeField]
     public Team team;
 
     void Start()
@@ -21,7 +19,7 @@ public class Player : MonoBehaviour
 
         //Load(); // Load the data when the game starts
 
-        StartBattle(); // For testing battle scene
+        //StartBattle(); // For testing battle scene
     }
 
     public void StartBattle()
@@ -45,17 +43,13 @@ public class Player : MonoBehaviour
         }
 
         StartCoroutine(DelayedFindTeam());
+        team.AssignTeam();
     }
 
     private IEnumerator DelayedFindTeam()
     {
         yield return null;
         team.FindEnemyTeam();
-    }
-
-    public void EndBattle()
-    {
-        team.IsInBattle = false; // Set the character as not in battle
     }
 
     public void Save()
@@ -148,7 +142,7 @@ public class Player : MonoBehaviour
             string teamJson = File.ReadAllText(teamPath);
             TeamSaveData teamData = JsonUtility.FromJson<TeamSaveData>(teamJson);
 
-            for (int i = 0; i < team.SelectedCharacters.Length; i++)
+            for (int i = 0; i < team.CharacterPrefabs.Length; i++)
             {
                 if (i < teamData.selectedCharacters.Count)
                 {
@@ -159,12 +153,20 @@ public class Player : MonoBehaviour
                         GameObject obj = Instantiate(prefab);
                         BaseCharacter c = obj.GetComponent<BaseCharacter>();
                         ApplyCharacterStats(c, savedCharacter);
-                        team.SelectedCharacters[i] = obj;
+                        team.CharacterPrefabs[i] = obj;
                     }
                     else
                     {
                         Debug.LogWarning("Prefab not found for ID: " + savedCharacter.Id);
                     }
+                }
+            }
+
+            for (int i = 0; i < team.CharacterPrefabs.Length; i++)
+            {
+                if (team.CharacterPrefabs[i] != null)
+                {
+                    team.SelectedCharacters[i] = team.CharacterPrefabs[i];
                 }
             }
         }
