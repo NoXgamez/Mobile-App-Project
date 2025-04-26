@@ -7,6 +7,8 @@ public class Team : MonoBehaviour
     public Vector2[] SpawnPositions = new Vector2[4];
     //public bool isPlayer = false;
     public bool IsInBattle;
+    public bool IsPlayer;
+    public GameManager gm;
     public Team enemyTeam;
     public GameObject[] enemies = new GameObject[4];
 

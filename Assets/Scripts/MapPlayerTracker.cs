@@ -11,6 +11,7 @@ namespace Map
         public float enterNodeDelay = 1f;
         public MapManager mapManager;
         public MapView view;
+        public static GameManager gm;
 
         public static MapPlayerTracker Instance;
 
@@ -69,10 +70,13 @@ namespace Map
             switch (mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
+                    gm.StartBattle();
                     break;
                 case NodeType.EliteEnemy:
+                    gm.StartBattle();
                     break;
                 case NodeType.RestSite:
+                    gm.OpenInventory();
                     break;
                 case NodeType.Treasure:
                     break;
