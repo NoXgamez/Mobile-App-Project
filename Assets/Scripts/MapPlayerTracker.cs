@@ -83,6 +83,7 @@ namespace Map
                     gm.OpenTreasure();
                     break;
                 case NodeType.Store:
+                    gm.OpenStore();
                     break;
                 case NodeType.Boss:
                     break;

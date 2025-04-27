@@ -103,8 +103,9 @@ MonoBehaviour:
   SpriteIndex: 0
   Evolutions:
   - {fileID: 21300000, guid: 3e2679b408dc4524f819ff4e0a69eb20, type: 3}
-  - {fileID: 21300000, guid: 9ba6da6a89dc4da4d837a76076a76424, type: 3}
   - {fileID: 21300000, guid: 56d09486463082341a418886ebfcf612, type: 3}
+  - {fileID: 21300000, guid: 9ba6da6a89dc4da4d837a76076a76424, type: 3}
+  spriteRenderer: {fileID: 8965364413938538460}
   team: {fileID: 0}
   HealthText: {fileID: 0}
   Id: sheep

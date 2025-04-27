@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     // Components
     public Storage storage;
     public Team team;
+    public int money;
 
     void Start()
     {

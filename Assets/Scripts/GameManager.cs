@@ -5,11 +5,12 @@ public class GameManager : MonoBehaviour
 {
     public Player player;
     public Enemy enemy;
-    public GameObject[] scenes = new GameObject[4];
+    public GameObject[] scenes;
     // 0 is map
     // 1 is battle
     // 2 is inventory
     // 3 is treasure
+    // 4 is store
 
     private void Start()
     {
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         if (IsPlayer)
         {
             Debug.Log("Player won the battle!");
+            player.money += 10;
             // Handle player win logic here
         }
         else
@@ -66,12 +68,13 @@ public class GameManager : MonoBehaviour
         OpenMap();
     }
 
+    public TMPro.TMP_Text AmountText;
     public void OpenTreasure()
     {
-        CloseMap();
         scenes[3].gameObject.SetActive(true);
-
         int amount = Random.Range(20, 51);
+        AmountText.text = "+" + amount.ToString();
+        player.money += amount;
         StartCoroutine(CloseTreasure());
     }
 
@@ -79,6 +82,15 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         scenes[3].gameObject.SetActive(false);
-        OpenMap();
+    }
+
+    public void OpenStore()
+    {
+        scenes[4].gameObject.SetActive(true);
+    }
+
+    public void CloseStore()
+    {
+        scenes[4].gameObject.SetActive(false);
     }
 }

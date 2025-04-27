@@ -13,6 +13,7 @@ public class BaseCharacter : MonoBehaviour
     public int SpriteIndex;
     [Tooltip("Base should be 0, devil should be 1, angel should be 2")]
     public Sprite[] Evolutions = new Sprite[3];
+    [SerializeField]
     private SpriteRenderer spriteRenderer;
 
     public Team team;
@@ -213,7 +214,7 @@ public class BaseCharacter : MonoBehaviour
         spriteRenderer.sprite = ActiveSprite;
     }
 
-    private void IncreaseStat( int amount, Stat stat)
+    public void IncreaseStat( int amount, Stat stat)
     {
         switch (stat)
         {
@@ -234,7 +235,7 @@ public class BaseCharacter : MonoBehaviour
         }
     }
 
-    private enum Stat
+    public enum Stat
     {
         Health = 0,
         Damage = 1
