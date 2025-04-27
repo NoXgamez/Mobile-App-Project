@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public InterstitialAd ad;
     public Player player;
     public Enemy enemy;
     public GameObject[] scenes;
@@ -46,14 +47,18 @@ public class GameManager : MonoBehaviour
         if (IsPlayer)
         {
             Debug.Log("Player won the battle!");
-            player.money += 10;
             // Handle player win logic here
+            player.money += 10;
         }
         else
         {
             Debug.Log("Enemy won the battle!");
             // Handle enemy win logic here
+            ad.LoadAd();
+            ad.ShowAd();
         }
+
+        OpenMap();
     }
 
     public void OpenInventory()
@@ -86,11 +91,13 @@ public class GameManager : MonoBehaviour
 
     public void OpenStore()
     {
+        CloseMap();
         scenes[4].gameObject.SetActive(true);
     }
 
     public void CloseStore()
     {
         scenes[4].gameObject.SetActive(false);
+        OpenMap();
     }
 }
