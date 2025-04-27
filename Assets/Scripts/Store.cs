@@ -10,22 +10,24 @@ public class Store : MonoBehaviour
     private void OnEnable()
     {
         for (int i = 0; i < Slots.Length; i++)
+        {
             UpdateTexts(i);
+        }
     }
 
     private void UpdateTexts(int i)
     {
-        if (player.team.SelectedCharacters[i] != null)
+        if (player.team.instances[i] != null)
         {
             int exp = UnityEngine.Random.Range(-1, -2);
             int cost = UnityEngine.Random.Range(1, 5);
 
             Slots[i].SetActive(true);
             StoreSlot slot = Slots[i].GetComponent<StoreSlot>();
-            slot.CharacterImage.sprite = player.team.SelectedCharacters[i].GetComponent<BaseCharacter>().Evolutions[player.team.SelectedCharacters[i].GetComponent<BaseCharacter>().SpriteIndex];
-            string health = player.team.SelectedCharacters[i].GetComponent<BaseCharacter>().MaxHealth.ToString() + "/" + player.team.SelectedCharacters[i].GetComponent<BaseCharacter>().HealthCap.ToString();
+            slot.CharacterImage.sprite = player.team.instances[i].GetComponent<BaseCharacter>().Evolutions[player.team.instances[i].GetComponent<BaseCharacter>().SpriteIndex];
+            string health = player.team.instances[i].GetComponent<BaseCharacter>().MaxHealth.ToString() + "/" + player.team.instances[i].GetComponent<BaseCharacter>().HealthCap.ToString();
             slot.HealthTxt.text = health;
-            string damage = player.team.SelectedCharacters[i].GetComponent<BaseCharacter>().Damage.ToString() + "/" + player.team.SelectedCharacters[i].GetComponent<BaseCharacter>().DamageCap.ToString();
+            string damage = player.team.instances[i].GetComponent<BaseCharacter>().Damage.ToString() + "/" + player.team.instances[i].GetComponent<BaseCharacter>().DamageCap.ToString();
             slot.DamageTxt.text = damage;
             slot.CostTxt.text = cost.ToString();
             if (exp > 0)
@@ -51,7 +53,7 @@ public class Store : MonoBehaviour
 
     public void Upgrade(int index)
     {
-        BaseCharacter character = player.team.SelectedCharacters[index].GetComponent<BaseCharacter>();
+        BaseCharacter character = player.team.instances[index].GetComponent<BaseCharacter>();
 
         if (character != null && !Slots[index].GetComponent<StoreSlot>().IsBought && player.money >= Slots[index].GetComponent<StoreSlot>().cost)
         {

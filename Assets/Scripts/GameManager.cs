@@ -1,8 +1,10 @@
+using Map;
 using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public MapManager mm;
     public InterstitialAd ad;
     public Player player;
     public Enemy enemy;
@@ -12,6 +14,7 @@ public class GameManager : MonoBehaviour
     // 2 is inventory
     // 3 is treasure
     // 4 is store
+    // 5 is get new character
 
     private void Start()
     {
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player won the battle!");
             // Handle player win logic here
             player.money += 10;
+            OpenGetNewCharacter();
         }
         else
         {
@@ -59,6 +63,11 @@ public class GameManager : MonoBehaviour
         }
 
         OpenMap();
+    }
+
+    private void Restart()
+    {
+
     }
 
     public void OpenInventory()
@@ -98,6 +107,22 @@ public class GameManager : MonoBehaviour
     public void CloseStore()
     {
         scenes[4].gameObject.SetActive(false);
+        OpenMap();
+    }
+
+    public void OpenGetNewCharacter()
+    {
+        CloseMap();
+        scenes[5].gameObject.SetActive(true);
+        GenNewCharacter gen = scenes[5].gameObject.GetComponent<GenNewCharacter>();
+        gen.GetNewCharacter();
+        StartCoroutine(CloseGetNewCharacter());
+    }
+
+    public IEnumerator CloseGetNewCharacter()
+    {
+        yield return new WaitForSeconds(2f);
+        scenes[5].gameObject.SetActive(false);
         OpenMap();
     }
 }

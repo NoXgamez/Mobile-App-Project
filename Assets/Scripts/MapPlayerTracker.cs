@@ -86,8 +86,10 @@ namespace Map
                     gm.OpenStore();
                     break;
                 case NodeType.Boss:
+                    gm.StartBattle();
                     break;
                 case NodeType.Mystery:
+                    gm.OpenGetNewCharacter();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

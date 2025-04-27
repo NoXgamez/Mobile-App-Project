@@ -161,11 +161,11 @@ public class StorageBox : MonoBehaviour
 
                 // Create an instance of the characters
                 GameObject character0 = player.storage.CharactersStored[i];
-                GameObject character1 = player.team.SelectedCharacters[j];
+                GameObject character1 = player.team.instances[j];
 
                 // Swap the characters in the box and between inventory and box
                 player.storage.CharactersStored[i] = character1;
-                player.team.SelectedCharacters[j] = character0;
+                player.team.instances[j] = character0;
 
                 // Reset the colours
                 SelectedCharacters[0].GetComponent<Image>().color = defaultColor;
@@ -179,11 +179,11 @@ public class StorageBox : MonoBehaviour
 
                 // Create an instance of the characters
                 GameObject character0 = player.storage.CharactersStored[i];
-                GameObject character1 = player.team.SelectedCharacters[j];
+                GameObject character1 = player.team.instances[j];
 
                 // Swap the characters in the box and between inventory and box
                 player.storage.CharactersStored[i] = character1;
-                player.team.SelectedCharacters[j] = character0;
+                player.team.instances[j] = character0;
 
                 // Reset the colours
                 SelectedCharacters[0].GetComponent<Image>().color = defaultColor;
@@ -214,12 +214,12 @@ public class StorageBox : MonoBehaviour
                 int j = System.Array.IndexOf(playerTeam, SelectedCharacters[1]);
 
                 // Create an instance of the characters
-                GameObject character0 = player.team.SelectedCharacters[i];
-                GameObject character1 = player.team.SelectedCharacters[j];
+                GameObject character0 = player.team.instances[i];
+                GameObject character1 = player.team.instances[j];
 
                 // Swap the position of the characters in the party
-                player.team.SelectedCharacters[i] = character1;
-                player.team.SelectedCharacters[j] = character0;
+                player.team.instances[i] = character1;
+                player.team.instances[j] = character0;
 
                 // Reset the colours
                 SelectedCharacters[0].GetComponent<Image>().color = defaultColor;

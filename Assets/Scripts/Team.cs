@@ -83,19 +83,34 @@ public class Team : MonoBehaviour
                 Debug.LogWarning($"Enemy character at index {i} is null");
         }
     }
-    GameObject[] instances = new GameObject[4];
+    public GameObject[] instances = new GameObject[4];
 
     public void SpawnCharacter(GameObject obj, int index)
     {
         if (obj != null)
         {
-            instances[index] = Instantiate(obj, Vector3.zero, Quaternion.identity);
+            if (instances[index] == null)
+            {
+                instances[index] = Instantiate(obj, Vector3.zero, Quaternion.identity);
+            }
+            else
+            {
+                BaseCharacter bc = obj.GetComponent<BaseCharacter>();
+                instances[index].GetComponent<BaseCharacter>().IsEvolved = bc.IsEvolved;
+                instances[index].GetComponent<BaseCharacter>().MaxHealth = bc.MaxHealth;
+                instances[index].GetComponent<BaseCharacter>().HealthCap = bc.HealthCap;
+                instances[index].GetComponent<BaseCharacter>().Damage = bc.Damage;
+                instances[index].GetComponent<BaseCharacter>().DamageCap = bc.DamageCap;
+                instances[index].GetComponent<BaseCharacter>().Experience = bc.Experience;
+
+            }
             //SelectedCharacters[index] = instances[index];
 
             CharacterPositions[index].image.sprite = instances[index].GetComponent<SpriteRenderer>().sprite;
             CharacterPositions[index].healthText.text = instances[index].GetComponent<BaseCharacter>().Health.ToString();
             CharacterPositions[index].damageText.text = instances[index].GetComponent<BaseCharacter>().Damage.ToString();
             instances[index].GetComponent<BaseCharacter>().HealthText = CharacterPositions[index].healthText;
+            instances[index].gameObject.SetActive(true);
         }
     }
 
@@ -103,7 +118,7 @@ public class Team : MonoBehaviour
     {
         foreach (GameObject i in instances)
         {
-            Destroy(i);
+            i.gameObject.SetActive(false);
         }
     }
 }
