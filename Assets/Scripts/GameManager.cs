@@ -5,7 +5,6 @@ public class GameManager : MonoBehaviour
 {
     public Player player;
     public Enemy enemy;
-    public Camera cam;
     public GameObject[] scenes = new GameObject[4];
     // 0 is map
     // 1 is battle
@@ -15,11 +14,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //player.Load();
-    }
-
-    private void GetCameraSize()
-    {
-
     }
 
     public void OpenMap()
@@ -42,6 +36,8 @@ public class GameManager : MonoBehaviour
 
     public void EndBattle(bool IsPlayer)
     {
+        player.team.DespawnCharacters();
+        enemy.team.DespawnCharacters();
         scenes[1].gameObject.SetActive(false);
         player.team.IsInBattle = false;
         enemy.team.IsInBattle = false;

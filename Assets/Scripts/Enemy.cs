@@ -9,9 +9,16 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         team = GetComponent<Team>();
-
-        StartCoroutine(DelayedStart());
+        GetRandomCharacters();
     }
+
+    private IEnumerator DelayedFindTeam()
+    {
+        yield return null;
+        team.FindEnemyTeam();
+    }
+
+    /*
     private IEnumerator DelayedStart()
     {
         yield return null;
@@ -20,28 +27,31 @@ public class Enemy : MonoBehaviour
         StartBattle();
         team.FindEnemyTeam();
     }
+    */
 
     public void StartBattle()
     {
         team.IsInBattle = true; // Set the character as in battle
+        StartCoroutine(DelayedFindTeam()); // Find the enemy team after a frame
+        GetRandomCharacters();
 
         for (int i = 0; i < team.CharacterPrefabs.Length; i++)
         {
             if (team.CharacterPrefabs[i] != null)
             {
-                team.SpawnCharacter(team.CharacterPrefabs[i], i);
+                team.SelectedCharacters[i] = team.CharacterPrefabs[i]; // Assign the character prefab to the selected characters array
 
-                BaseCharacter c = team.SelectedCharacters[i].GetComponent<BaseCharacter>();
-                if (c != null)
+                if (team.SelectedCharacters[i] != null)
                 {
-                    c.Health = c.MaxHealth;
-                    c.Stamina = 0; // Start the battle with no stamina
+                    team.SelectedCharacters[i].GetComponent<BaseCharacter>().Health = team.SelectedCharacters[i].GetComponent<BaseCharacter>().MaxHealth;
+                    team.SelectedCharacters[i].GetComponent<BaseCharacter>().GetComponent<BaseCharacter>().Stamina = 0; // Start the battle with no stamina
                     //StaminaCount = 0; // Start the battle with no stamina points
+                    team.SelectedCharacters[i].GetComponent<BaseCharacter>().team = team; // Assign the enemy team to the character
                 }
+
+                team.SpawnCharacter(team.SelectedCharacters[i], i);
             }
         }
-
-        team.AssignTeam();
     }
 
     private void GetRandomCharacters()
@@ -55,7 +65,7 @@ public class Enemy : MonoBehaviour
             Debug.Log("Loaded prefab: " + prefab.name);
         }
 
-        if (team.enemyTeam.SelectedCharacters.Length == 4)
+        if (team.enemies.Length == 4)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -65,7 +75,7 @@ public class Enemy : MonoBehaviour
                 team.CharacterPrefabs[i] = randomPrefab;
             }
         }
-        else if (team.enemyTeam.SelectedCharacters.Length == 1)
+        else if (team.enemies.Length == 1)
         {
             int randomAmount = Random.Range(1, 3);
 
@@ -77,7 +87,7 @@ public class Enemy : MonoBehaviour
                 team.CharacterPrefabs[i] = randomPrefab;
             }
         }
-        else if (team.enemyTeam.SelectedCharacters.Length > 1 && team.enemyTeam.SelectedCharacters.Length < 4)
+        else if (team.enemies.Length > 1 && team.enemies.Length < 4)
         {
             int randomAmount = Random.Range(2, 4);
 

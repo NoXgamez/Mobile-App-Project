@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Team : MonoBehaviour
 {
     public GameObject[] CharacterPrefabs = new GameObject[4];
     public GameObject[] SelectedCharacters = new GameObject[4];
-    public Vector3[] SpawnPositions = new Vector3[4];
+    public CharacterPositionObject[] CharacterPositions = new CharacterPositionObject[4];
     //public bool isPlayer = false;
     public bool IsInBattle;
     public bool IsPlayer;
@@ -14,7 +15,7 @@ public class Team : MonoBehaviour
 
     public void AssignTeam()
     {
-        foreach (GameObject obj in SelectedCharacters)
+        foreach (GameObject obj in instances)
         {
             if (obj != null)
             {
@@ -26,7 +27,7 @@ public class Team : MonoBehaviour
             }
         }
 
-        FindEnemyTeam(); // For testing purposes only, want to actually find the enemy team when a battle begins to be called in Player.StartBattle()
+        //FindEnemyTeam(); // For testing purposes only, want to actually find the enemy team when a battle begins to be called in Player.StartBattle()
     }
 
     public void FindEnemyTeam()
@@ -73,9 +74,9 @@ public class Team : MonoBehaviour
         foreach (GameObject sc in SelectedCharacters)
             sc.GetComponent<BaseCharacter>().team = this;
 
-        for (int i = 0; i < enemyTeam.SelectedCharacters.Length; i++)
+        for (int i = 0; i < enemyTeam.instances.Length; i++)
         {
-            GameObject sc = enemyTeam.SelectedCharacters[i];
+            GameObject sc = enemyTeam.instances[i];
             if (sc != null)
                 enemies[i] = sc;
             else
@@ -88,8 +89,13 @@ public class Team : MonoBehaviour
     {
         if (obj != null)
         {
-            instances[index] = Instantiate(obj, SpawnPositions[index], Quaternion.identity);
-            SelectedCharacters[index] = instances[index];
+            instances[index] = Instantiate(obj, Vector3.zero, Quaternion.identity);
+            //SelectedCharacters[index] = instances[index];
+
+            CharacterPositions[index].image.sprite = instances[index].GetComponent<SpriteRenderer>().sprite;
+            CharacterPositions[index].healthText.text = instances[index].GetComponent<BaseCharacter>().Health.ToString();
+            CharacterPositions[index].damageText.text = instances[index].GetComponent<BaseCharacter>().Damage.ToString();
+            instances[index].GetComponent<BaseCharacter>().HealthText = CharacterPositions[index].healthText;
         }
     }
 

@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using RangeAttribute = UnityEngine.RangeAttribute;
 
@@ -17,14 +16,7 @@ public class BaseCharacter : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     public Team team;
-
-    [Header("Character UI Components")]
-    [SerializeField]
-    TextMeshPro healthText;
-    [SerializeField]
-    TextMeshPro damageText;
-    //[SerializeField]
-    // Stamina Bar
+    public TMPro.TMP_Text HealthText;
 
     // Variables
     [Header("Character Info")]
@@ -61,7 +53,7 @@ public class BaseCharacter : MonoBehaviour
         // Setting the components & variables
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        //UpdateSprite();
+        UpdateSprite();
     }
 
     private void FixedUpdate()
@@ -80,6 +72,7 @@ public class BaseCharacter : MonoBehaviour
                 BasicAttack();
             }
             // Update the stamina bar and health count
+            HealthText.text = Health.ToString();
         }
     }
 

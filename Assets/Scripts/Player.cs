@@ -42,8 +42,8 @@ public class Player : MonoBehaviour
             }
         }
 
+        team.AssignTeam(); // Assign the team to the characters
         StartCoroutine(DelayedFindTeam());
-        team.AssignTeam();
     }
 
     private IEnumerator DelayedFindTeam()
