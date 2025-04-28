@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public Enemy enemy;
     public GameObject[] scenes;
+    public SceneManage sm;
     // 0 is map
     // 1 is battle
     // 2 is inventory
@@ -138,7 +139,6 @@ public class GameManager : MonoBehaviour
     public void CloseLose()
     {
         scenes[6].gameObject.SetActive(false);
-
-        // Move to menu
+        sm.StartScene("MenuScene");
     }
 }

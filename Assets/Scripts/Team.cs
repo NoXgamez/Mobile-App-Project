@@ -91,7 +91,7 @@ public class Team : MonoBehaviour
         {
             if (instances[index] == null)
             {
-                instances[index] = Instantiate(obj, Vector3.zero, Quaternion.identity);
+                instances[index] = Instantiate(obj, new Vector3(-1000, -1000, 0), Quaternion.identity);
             }
 
             BaseCharacter bc = obj.GetComponent<BaseCharacter>();
