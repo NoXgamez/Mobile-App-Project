@@ -83,10 +83,14 @@ namespace Map
                     gm.OpenTreasure();
                     break;
                 case NodeType.Store:
+                    gm.OpenStore();
                     break;
                 case NodeType.Boss:
+                    gm.StartBattle();
+                    gm.mm.GenerateNewMap();
                     break;
                 case NodeType.Mystery:
+                    gm.OpenGetNewCharacter();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -103,11 +103,11 @@ MonoBehaviour:
   SpriteIndex: 0
   Evolutions:
   - {fileID: 21300000, guid: 53958d2c540b55c488828860c6e45945, type: 3}
-  - {fileID: 21300000, guid: 5aee82d2783fb50499b36bb5a3b7fa27, type: 3}
   - {fileID: 21300000, guid: 042d7138c09519046b447ab7c1a6fda5, type: 3}
+  - {fileID: 21300000, guid: 5aee82d2783fb50499b36bb5a3b7fa27, type: 3}
+  spriteRenderer: {fileID: 5238158323875099300}
   team: {fileID: 0}
-  healthText: {fileID: 0}
-  damageText: {fileID: 0}
+  HealthText: {fileID: 0}
   Id: snake
   Name: Snake
   IsEvolved: 0

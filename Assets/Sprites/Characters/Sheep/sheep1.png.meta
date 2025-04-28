@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 9ba6da6a89dc4da4d837a76076a76424
+guid: 56d09486463082341a418886ebfcf612
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 768539965427458729
-    second: image-removebg-preview (4)_0
-  - first:
-      213: 8540916072121935540
-    second: image-removebg-preview (4)_1
+      213: 1635044370023475632
+    second: image-removebg-preview (5)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -116,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: image-removebg-preview (4)_0
+      name: image-removebg-preview (5)_0
       rect:
         serializedVersion: 2
-        x: 127
-        y: 524
-        width: 153
-        height: 62
+        x: 40
+        y: 50
+        width: 343
+        height: 488
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,30 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9a2aef2d6076aaa00800000000000000
-      internalID: 768539965427458729
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: image-removebg-preview (4)_1
-      rect:
-        serializedVersion: 2
-        x: 19
-        y: 30
-        width: 381
-        height: 490
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4b6a0477aed678670800000000000000
-      internalID: 8540916072121935540
+      spriteID: 0b960431138d0b610800000000000000
+      internalID: 1635044370023475632
       vertices: []
       indices: 
       edges: []
@@ -173,8 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      image-removebg-preview (4)_0: 768539965427458729
-      image-removebg-preview (4)_1: 8540916072121935540
+      image-removebg-preview (5)_0: 1635044370023475632
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

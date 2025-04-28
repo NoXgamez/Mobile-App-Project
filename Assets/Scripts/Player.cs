@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     // Components
     public Storage storage;
     public Team team;
+    public int money;
 
     void Start()
     {
@@ -17,22 +18,29 @@ public class Player : MonoBehaviour
         storage = GetComponentInChildren<Storage>();
         team = GetComponentInChildren<Team>();
 
-        //Load(); // Load the data when the game starts
+        Load(); // Load the data when the game starts
 
         //StartBattle(); // For testing battle scene
+        for (int i = 0; i < team.SelectedCharacters.Length; i++)
+        {
+            if (team.SelectedCharacters[i] != null)
+            {
+                team.SpawnCharacter(team.SelectedCharacters[i], i);
+            }
+        }
     }
 
     public void StartBattle()
     {
         team.IsInBattle = true; // Set the character as in battle
 
-        for (int i = 0; i < team.SelectedCharacters.Length; i++)
+        for (int i = 0; i < team.instances.Length; i++)
         {
-            if (team.SelectedCharacters != null)
+            if (team.instances != null)
             {
-                team.SpawnCharacter(team.SelectedCharacters[i], i);
+                team.SpawnCharacter(team.instances[i], i);
 
-                BaseCharacter c = team.SelectedCharacters[i].GetComponent<BaseCharacter>();
+                BaseCharacter c = team.instances[i].GetComponent<BaseCharacter>();
                 if (c != null)
                 {
                     c.Health = c.MaxHealth;
@@ -42,8 +50,8 @@ public class Player : MonoBehaviour
             }
         }
 
+        team.AssignTeam(); // Assign the team to the characters
         StartCoroutine(DelayedFindTeam());
-        team.AssignTeam();
     }
 
     private IEnumerator DelayedFindTeam()
@@ -168,6 +176,20 @@ public class Player : MonoBehaviour
                 {
                     team.SelectedCharacters[i] = team.CharacterPrefabs[i];
                 }
+            }
+        }
+
+        if (team.CharacterPrefabs[0] == null)
+        {
+            GameObject[] allPrefabs = Resources.LoadAll<GameObject>("Characters");
+
+            for (int i = 0; i < team.CharacterPrefabs.Length; i++)
+            {
+                int randomIndex = Random.Range(0, allPrefabs.Length);
+                GameObject randomPrefab = allPrefabs[randomIndex];
+
+                team.CharacterPrefabs[i] = randomPrefab;
+                team.SelectedCharacters[i] = team.CharacterPrefabs[i];
             }
         }
 

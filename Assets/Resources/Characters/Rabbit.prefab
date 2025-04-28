@@ -103,11 +103,11 @@ MonoBehaviour:
   SpriteIndex: 0
   Evolutions:
   - {fileID: 21300000, guid: 90221cdd6cc50174db477e77771dd406, type: 3}
-  - {fileID: 21300000, guid: b077eec94c2a79141b8df1b148354dd1, type: 3}
   - {fileID: 21300000, guid: 91f7d8ffe8f4e2645b8a67d79db51f09, type: 3}
+  - {fileID: 21300000, guid: b077eec94c2a79141b8df1b148354dd1, type: 3}
+  spriteRenderer: {fileID: 5238158323875099300}
   team: {fileID: 0}
-  healthText: {fileID: 0}
-  damageText: {fileID: 0}
+  HealthText: {fileID: 0}
   Id: rabbit
   Name: Rabbit
   IsEvolved: 0
@@ -117,5 +117,5 @@ MonoBehaviour:
   Damage: 2
   DamageCap: 6
   Stamina: 0
-  StaminaRecoveryRate: 0.3
+  StaminaRecoveryRate: 0.25
   Experience: 0

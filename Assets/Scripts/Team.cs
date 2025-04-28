@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Team : MonoBehaviour
 {
     public GameObject[] CharacterPrefabs = new GameObject[4];
     public GameObject[] SelectedCharacters = new GameObject[4];
-    public Vector3[] SpawnPositions = new Vector3[4];
+    public CharacterPositionObject[] CharacterPositions = new CharacterPositionObject[4];
     //public bool isPlayer = false;
     public bool IsInBattle;
     public bool IsPlayer;
@@ -14,7 +15,7 @@ public class Team : MonoBehaviour
 
     public void AssignTeam()
     {
-        foreach (GameObject obj in SelectedCharacters)
+        foreach (GameObject obj in instances)
         {
             if (obj != null)
             {
@@ -26,7 +27,7 @@ public class Team : MonoBehaviour
             }
         }
 
-        FindEnemyTeam(); // For testing purposes only, want to actually find the enemy team when a battle begins to be called in Player.StartBattle()
+        //FindEnemyTeam(); // For testing purposes only, want to actually find the enemy team when a battle begins to be called in Player.StartBattle()
     }
 
     public void FindEnemyTeam()
@@ -70,34 +71,44 @@ public class Team : MonoBehaviour
         }
         */
 
-        foreach (GameObject sc in SelectedCharacters)
+        foreach (GameObject sc in instances)
             sc.GetComponent<BaseCharacter>().team = this;
 
-        for (int i = 0; i < enemyTeam.SelectedCharacters.Length; i++)
+        for (int i = 0; i < enemyTeam.instances.Length; i++)
         {
-            GameObject sc = enemyTeam.SelectedCharacters[i];
+            GameObject sc = enemyTeam.instances[i];
             if (sc != null)
                 enemies[i] = sc;
             else
                 Debug.LogWarning($"Enemy character at index {i} is null");
         }
     }
-    GameObject[] instances = new GameObject[4];
+    public GameObject[] instances = new GameObject[4];
 
     public void SpawnCharacter(GameObject obj, int index)
     {
         if (obj != null)
         {
-            instances[index] = Instantiate(obj, SpawnPositions[index], Quaternion.identity);
-            SelectedCharacters[index] = instances[index];
-        }
-    }
+            if (instances[index] == null)
+            {
+                instances[index] = Instantiate(obj, new Vector3(-1000, -1000, 0), Quaternion.identity);
+            }
 
-    public void DespawnCharacters()
-    {
-        foreach (GameObject i in instances)
-        {
-            Destroy(i);
+            BaseCharacter bc = obj.GetComponent<BaseCharacter>();
+            instances[index].GetComponent<BaseCharacter>().IsEvolved = bc.IsEvolved;
+            instances[index].GetComponent<BaseCharacter>().MaxHealth = bc.MaxHealth;
+            instances[index].GetComponent<BaseCharacter>().HealthCap = bc.HealthCap;
+            instances[index].GetComponent<BaseCharacter>().Damage = bc.Damage;
+            instances[index].GetComponent<BaseCharacter>().DamageCap = bc.DamageCap;
+            instances[index].GetComponent<BaseCharacter>().Experience = bc.Experience;
+
+            //SelectedCharacters[index] = instances[index];
+
+            CharacterPositions[index].image.sprite = instances[index].GetComponent<SpriteRenderer>().sprite;
+            CharacterPositions[index].healthText.text = instances[index].GetComponent<BaseCharacter>().Health.ToString();
+            CharacterPositions[index].damageText.text = instances[index].GetComponent<BaseCharacter>().Damage.ToString();
+            instances[index].GetComponent<BaseCharacter>().HealthText = CharacterPositions[index].healthText;
+            instances[index].gameObject.SetActive(true);
         }
     }
 }

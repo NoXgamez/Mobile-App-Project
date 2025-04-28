@@ -1,25 +1,27 @@
+using Map;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public MapManager mm;
+    public InterstitialAd ad;
     public Player player;
     public Enemy enemy;
-    public Camera cam;
-    public GameObject[] scenes = new GameObject[4];
+    public GameObject[] scenes;
+    public SceneManage sm;
     // 0 is map
     // 1 is battle
     // 2 is inventory
     // 3 is treasure
+    // 4 is store
+    // 5 is get new character
+    // 6 is lose
 
     private void Start()
     {
         //player.Load();
-    }
-
-    private void GetCameraSize()
-    {
-
     }
 
     public void OpenMap()
@@ -49,12 +51,26 @@ public class GameManager : MonoBehaviour
         if (IsPlayer)
         {
             Debug.Log("Player won the battle!");
-            // Handle player win logic here
+            player.money += 10;
+            OpenMap();
+            OpenGetNewCharacter();
         }
         else
         {
             Debug.Log("Enemy won the battle!");
-            // Handle enemy win logic here
+
+            OpenLose();
+            player.money = 0;
+            for (int i = 0; i < player.team.instances.Length; i++)
+            {
+                player.team.instances[i] = null;
+                player.team.SelectedCharacters[i] = null;
+                player.team.CharacterPrefabs[i] = null;
+            }
+            foreach (GameObject obj in player.storage.CharactersStored)
+            {
+                player.storage.CharactersStored.Remove(obj);
+            }
         }
     }
 
@@ -70,12 +86,13 @@ public class GameManager : MonoBehaviour
         OpenMap();
     }
 
+    public TMPro.TMP_Text AmountText;
     public void OpenTreasure()
     {
-        CloseMap();
         scenes[3].gameObject.SetActive(true);
-
         int amount = Random.Range(20, 51);
+        AmountText.text = "+" + amount.ToString();
+        player.money += amount;
         StartCoroutine(CloseTreasure());
     }
 
@@ -83,6 +100,45 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         scenes[3].gameObject.SetActive(false);
+    }
+
+    public void OpenStore()
+    {
+        CloseMap();
+        scenes[4].gameObject.SetActive(true);
+    }
+
+    public void CloseStore()
+    {
+        scenes[4].gameObject.SetActive(false);
         OpenMap();
+    }
+
+    public void OpenGetNewCharacter()
+    {
+        scenes[5].gameObject.SetActive(true);
+        GenNewCharacter gen = scenes[5].gameObject.GetComponent<GenNewCharacter>();
+        gen.GetNewCharacter();
+        StartCoroutine(CloseGetNewCharacter());
+    }
+
+    public IEnumerator CloseGetNewCharacter()
+    {
+        yield return new WaitForSeconds(2f);
+        scenes[5].gameObject.SetActive(false);
+        OpenMap();
+    }
+
+    public void OpenLose()
+    {
+        scenes[6].gameObject.SetActive(true);
+
+        ad.LoadAd();
+        ad.ShowAd();
+    }
+    public void CloseLose()
+    {
+        scenes[6].gameObject.SetActive(false);
+        sm.StartScene("MenuScene");
     }
 }
