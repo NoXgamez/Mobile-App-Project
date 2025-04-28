@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
         {
             if (team.CharacterPrefabs[i] != null)
             {
-                team.instances[i] = Instantiate(team.CharacterPrefabs[i]); // Assign the character prefab to the selected characters array
+                team.instances[i] = Instantiate(team.CharacterPrefabs[i], new Vector3(-1000, -1000, 0), Quaternion.identity); // Assign the character prefab to the selected characters array
 
                 if (team.instances[i] != null)
                 {
