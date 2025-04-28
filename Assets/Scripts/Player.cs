@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
                 team.SpawnCharacter(team.SelectedCharacters[i], i);
             }
         }
-        team.DespawnCharacters();
     }
 
     public void StartBattle()
@@ -184,10 +183,14 @@ public class Player : MonoBehaviour
         {
             GameObject[] allPrefabs = Resources.LoadAll<GameObject>("Characters");
 
-            int randomIndex = Random.Range(0, allPrefabs.Length);
-            GameObject randomPrefab = allPrefabs[randomIndex];
+            for (int i = 0; i < team.CharacterPrefabs.Length; i++)
+            {
+                int randomIndex = Random.Range(0, allPrefabs.Length);
+                GameObject randomPrefab = allPrefabs[randomIndex];
 
-            team.instances[0] = randomPrefab;
+                team.CharacterPrefabs[i] = randomPrefab;
+                team.SelectedCharacters[i] = team.CharacterPrefabs[i];
+            }
         }
 
         string storagePath = Application.persistentDataPath + "/SaveData/storageData.json";

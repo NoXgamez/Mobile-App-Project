@@ -16,6 +16,13 @@ public class Enemy : MonoBehaviour
     {
         yield return null;
         team.FindEnemyTeam();
+        StartCoroutine(DelayedGetRandom());
+    }
+
+    private IEnumerator DelayedGetRandom()
+    {
+        yield return null;
+        GetRandomCharacters();
     }
 
     /*
@@ -33,23 +40,22 @@ public class Enemy : MonoBehaviour
     {
         team.IsInBattle = true; // Set the character as in battle
         StartCoroutine(DelayedFindTeam()); // Find the enemy team after a frame
-        GetRandomCharacters();
 
         for (int i = 0; i < team.CharacterPrefabs.Length; i++)
         {
             if (team.CharacterPrefabs[i] != null)
             {
-                team.SelectedCharacters[i] = team.CharacterPrefabs[i]; // Assign the character prefab to the selected characters array
+                team.instances[i] = Instantiate(team.CharacterPrefabs[i]); // Assign the character prefab to the selected characters array
 
-                if (team.SelectedCharacters[i] != null)
+                if (team.instances[i] != null)
                 {
-                    team.SelectedCharacters[i].GetComponent<BaseCharacter>().Health = team.SelectedCharacters[i].GetComponent<BaseCharacter>().MaxHealth;
-                    team.SelectedCharacters[i].GetComponent<BaseCharacter>().GetComponent<BaseCharacter>().Stamina = 0; // Start the battle with no stamina
-                    //StaminaCount = 0; // Start the battle with no stamina points
-                    team.SelectedCharacters[i].GetComponent<BaseCharacter>().team = team; // Assign the enemy team to the character
-                }
+                    team.SpawnCharacter(team.instances[i], i);
 
-                team.SpawnCharacter(team.SelectedCharacters[i], i);
+                    team.instances[i].GetComponent<BaseCharacter>().Health = team.instances[i].GetComponent<BaseCharacter>().MaxHealth;
+                    team.instances[i].GetComponent<BaseCharacter>().GetComponent<BaseCharacter>().Stamina = 0; // Start the battle with no stamina
+                    //StaminaCount = 0; // Start the battle with no stamina points
+                    team.instances[i].GetComponent<BaseCharacter>().team = team; // Assign the enemy team to the character
+                }
             }
         }
     }

@@ -86,6 +86,7 @@ namespace Map
                     gm.OpenStore();
                     break;
                 case NodeType.Boss:
+                    gm.mm.GenerateNewMap();
                     gm.StartBattle();
                     break;
                 case NodeType.Mystery:

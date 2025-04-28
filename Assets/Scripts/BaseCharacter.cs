@@ -182,7 +182,7 @@ public class BaseCharacter : MonoBehaviour
             Experience += amount;
 
             // Evolve when ExperienceNeeded is surpassed
-            if (Experience <= 3)
+            if (Experience <= -3)
             {
                 SpriteIndex = 1;
                 Evolve();

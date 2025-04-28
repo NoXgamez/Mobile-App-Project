@@ -71,7 +71,7 @@ public class Team : MonoBehaviour
         }
         */
 
-        foreach (GameObject sc in SelectedCharacters)
+        foreach (GameObject sc in instances)
             sc.GetComponent<BaseCharacter>().team = this;
 
         for (int i = 0; i < enemyTeam.instances.Length; i++)
@@ -93,17 +93,15 @@ public class Team : MonoBehaviour
             {
                 instances[index] = Instantiate(obj, Vector3.zero, Quaternion.identity);
             }
-            else
-            {
-                BaseCharacter bc = obj.GetComponent<BaseCharacter>();
-                instances[index].GetComponent<BaseCharacter>().IsEvolved = bc.IsEvolved;
-                instances[index].GetComponent<BaseCharacter>().MaxHealth = bc.MaxHealth;
-                instances[index].GetComponent<BaseCharacter>().HealthCap = bc.HealthCap;
-                instances[index].GetComponent<BaseCharacter>().Damage = bc.Damage;
-                instances[index].GetComponent<BaseCharacter>().DamageCap = bc.DamageCap;
-                instances[index].GetComponent<BaseCharacter>().Experience = bc.Experience;
 
-            }
+            BaseCharacter bc = obj.GetComponent<BaseCharacter>();
+            instances[index].GetComponent<BaseCharacter>().IsEvolved = bc.IsEvolved;
+            instances[index].GetComponent<BaseCharacter>().MaxHealth = bc.MaxHealth;
+            instances[index].GetComponent<BaseCharacter>().HealthCap = bc.HealthCap;
+            instances[index].GetComponent<BaseCharacter>().Damage = bc.Damage;
+            instances[index].GetComponent<BaseCharacter>().DamageCap = bc.DamageCap;
+            instances[index].GetComponent<BaseCharacter>().Experience = bc.Experience;
+
             //SelectedCharacters[index] = instances[index];
 
             CharacterPositions[index].image.sprite = instances[index].GetComponent<SpriteRenderer>().sprite;
@@ -111,14 +109,6 @@ public class Team : MonoBehaviour
             CharacterPositions[index].damageText.text = instances[index].GetComponent<BaseCharacter>().Damage.ToString();
             instances[index].GetComponent<BaseCharacter>().HealthText = CharacterPositions[index].healthText;
             instances[index].gameObject.SetActive(true);
-        }
-    }
-
-    public void DespawnCharacters()
-    {
-        foreach (GameObject i in instances)
-        {
-            i.gameObject.SetActive(false);
         }
     }
 }

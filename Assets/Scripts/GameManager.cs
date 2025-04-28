@@ -1,5 +1,6 @@
 using Map;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     // 3 is treasure
     // 4 is store
     // 5 is get new character
+    // 6 is lose
 
     private void Start()
     {
@@ -41,8 +43,6 @@ public class GameManager : MonoBehaviour
 
     public void EndBattle(bool IsPlayer)
     {
-        player.team.DespawnCharacters();
-        enemy.team.DespawnCharacters();
         scenes[1].gameObject.SetActive(false);
         player.team.IsInBattle = false;
         enemy.team.IsInBattle = false;
@@ -50,24 +50,27 @@ public class GameManager : MonoBehaviour
         if (IsPlayer)
         {
             Debug.Log("Player won the battle!");
-            // Handle player win logic here
             player.money += 10;
+            OpenMap();
             OpenGetNewCharacter();
         }
         else
         {
             Debug.Log("Enemy won the battle!");
-            // Handle enemy win logic here
-            ad.LoadAd();
-            ad.ShowAd();
+
+            OpenLose();
+            player.money = 0;
+            for (int i = 0; i < player.team.instances.Length; i++)
+            {
+                player.team.instances[i] = null;
+                player.team.SelectedCharacters[i] = null;
+                player.team.CharacterPrefabs[i] = null;
+            }
+            foreach (GameObject obj in player.storage.CharactersStored)
+            {
+                player.storage.CharactersStored.Remove(obj);
+            }
         }
-
-        OpenMap();
-    }
-
-    private void Restart()
-    {
-
     }
 
     public void OpenInventory()
@@ -112,7 +115,6 @@ public class GameManager : MonoBehaviour
 
     public void OpenGetNewCharacter()
     {
-        CloseMap();
         scenes[5].gameObject.SetActive(true);
         GenNewCharacter gen = scenes[5].gameObject.GetComponent<GenNewCharacter>();
         gen.GetNewCharacter();
@@ -124,5 +126,19 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         scenes[5].gameObject.SetActive(false);
         OpenMap();
+    }
+
+    public void OpenLose()
+    {
+        scenes[6].gameObject.SetActive(true);
+
+        ad.LoadAd();
+        ad.ShowAd();
+    }
+    public void CloseLose()
+    {
+        scenes[6].gameObject.SetActive(false);
+
+        // Move to menu
     }
 }

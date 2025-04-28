@@ -129,7 +129,7 @@ public class StorageBox : MonoBehaviour
             var slot = PlayerCharactersListItems[i].GetComponentInChildren<PartySlot>();
             GameObject character = player.team.SelectedCharacters[i];
 
-            slot.CharacterImage.sprite = character.GetComponent<SpriteRenderer>().sprite;
+            slot.CharacterImage.sprite = character.GetComponent<BaseCharacter>().Evolutions[character.GetComponent<BaseCharacter>().SpriteIndex];
             slot.CharacterName.text = character.GetComponent<BaseCharacter>().name;
             slot.CharacterStats.text = $"H: {character.GetComponent<BaseCharacter>().MaxHealth} D: {character.GetComponent<BaseCharacter>().Damage}";
         }

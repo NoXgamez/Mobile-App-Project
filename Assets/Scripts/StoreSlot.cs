@@ -10,5 +10,4 @@ public class StoreSlot : MonoBehaviour
     public TMPro.TMP_Text ExperienceTxt;
     public int cost = 0;
     public TMPro.TMP_Text CostTxt;
-    public bool IsBought = false;
 }

@@ -13,10 +13,11 @@ public class GenNewCharacter : MonoBehaviour
 
         int randomIndex = Random.Range(0, allPrefabs.Length);
         GameObject randomPrefab = allPrefabs[randomIndex];
+        image.sprite = randomPrefab.GetComponent<BaseCharacter>().Evolutions[randomPrefab.GetComponent<BaseCharacter>().SpriteIndex];
 
         for (int i = 0; i < player.team.instances.Length; i++)
         {
-            if (player.team.instances[i] != null)
+            if (player.team.instances[i] == null)
             {
                 player.team.instances[i] = randomPrefab;
                 return;
